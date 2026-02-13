@@ -1,0 +1,91 @@
+------------------------------------------
+
+   This file thinks it is:   RELEASE  in the SimpleSal/app-events repository human metadata.
+
+   The managed object, for TSC LLC repos, is a directory in the repo root (i.e., rr\app-events\).
+
+------------------------------------------
+
+=====================
+
+TruSoft Computing LLC
+
+ S~S  SimpleSal repository human metadata template documents: RELEASE notes for the consumer
+
+=====================
+
+ S~S TruSoft Computing LLC (TSC LLC) Repository Philosophy
+
+------------------------------------------
+
+ S~S  The Philosophy is stated somewhere else.
+
+   The SimpleSal repository README explains how a SimpleSal App, such as this one, is constructed.
+
+   There is additional information available on the "substack.com" site for user "SimpleSal".
+
+------------------------------------------
+
+=====================
+
+------------------------------------------
+
+ S~S Changes to a repository have been published by SimpleSal:
+
+ GitHub username            SimpleSal
+
+   repository               app-events
+
+     branch                 main-app-events
+
+       label on branch      release-260212
+
+ Date of Publishment        February 12, 2026
+
+ TSC LLC Version Identifier 260212
+
+ Human version Identifier   v0.9a
+
+------------------------------------------
+
+=====================
+
+ S~S  Release notes version 260212: app-events repository activity: create the repository
+
+------------------------------------------
+
+    Instantiate the repository version control database from file system version control database.
+
+------------------------------------------
+
+    This first version in the repository of the app-event SimpleSal App does not work.
+
+    The reason it does not work is due to a simple configuration error that may be common when
+    developers port their App into a SimpleSal App.  The release with the change to the software
+    to fix the configuration error will follow (soon) and the repository Application may be
+    explored by the developer by comparing the early nonworking version with the working version.
+
+    Any repository has the ability to manage even single-letter changes to source files.
+
+    The intention is to demonstrate the hidden complexities within ssTEA that support the main
+    educational goal.  Extensive explanatory messages are enabled in the failing version simply
+    to show how the explanatory messages communicate the condition of the App to the developer.
+
+    The change from nonworking to working will eliminate many of the messages during init State;
+    then the periodic display of the ssTEA API information for each Event will pop some eyeballs.
+
+    The App with messages fully enabled may hide the signal for the serial port each period.
+
+    The 1-second output to the serial port shows Time progressing, the Built-In LED is turned ON
+    at the start of a 5-second period, and then an Event occurs 3 seconds later to turn it OFF.
+
+------------------------------------------
+=====================
+
+ Copyright (c) 2026  TruSoft Computing LLC.  All Rights Reserved.
+
+
+
+
+
+

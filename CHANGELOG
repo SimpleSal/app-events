@@ -1,0 +1,66 @@
+------------------------------------------
+
+   This file thinks it is:  CHANGELOG in the SimpleSal/app-events repository human metadata.
+
+   The managed object, for TSC LLC repos, is a directory in the repo root (i.e., rr\app-events\).
+
+------------------------------------------
+
+=====================
+
+TruSoft Computing LLC
+
+ S~S  SimpleSal repository human metadata template documents: CHANGELOG of release information
+
+=====================
+
+ S~S TruSoft Computing LLC (TSC LLC) Repository Philosophy
+
+------------------------------------------
+
+ S~S  The Philosophy is stated somewhere else.
+
+   The SimpleSal repository README explains how a SimpleSal App, such as this one, is constructed.
+
+   There is additional information available on the "substack.com" site for user "SimpleSal".
+
+------------------------------------------
+
+=====================
+
+------------------------------------------
+
+ S~S Changes to a repository have been published by SimpleSal:
+
+ GitHub username            SimpleSal
+
+   repository               app-events
+
+     branch                 main-app-events
+
+       label on branch      release-260212
+
+ Date of Publishment        February 12, 2026
+
+ TSC LLC Version Identifier 260212
+
+ Human version Identifier   v0.9a
+
+------------------------------------------
+
+=====================
+
+ S~S  Release notes version 260212: app-events repository activity: create the repository
+
+------------------------------------------
+
+    Instantiate the repository version control database from file system version control database.
+
+------------------------------------------
+
+=====================
+
+ Copyright (c) 2026  TruSoft Computing LLC.  All Rights Reserved.
+
+
+
