@@ -38,48 +38,51 @@ TruSoft Computing LLC
 
      branch                 main-app-events
 
-       label on branch      release-260212
+       label on branch      release-260216
 
- Date of Publishment        February 12, 2026
+ Date of Publishment        February 16, 2026
 
- TSC LLC Version Identifier 260212
+ TSC LLC Version Identifier 260216
 
- Human version Identifier   v0.9a
+ Human version Identifier   v0.9b
 
 ------------------------------------------
 
 =====================
 
- S~S  Release notes version 260212: app-events repository activity: create the repository
+ S~S  Release notes version 260216: basis for "SimpleSal App bringup", which is "app-events".
 
 ------------------------------------------
 
-    Instantiate the repository version control database from file system version control database.
-
-------------------------------------------
-
-    This first version in the repository of the app-event SimpleSal App does not work.
-
-    The reason it does not work is due to a simple configuration error that may be common when
-    developers port their App into a SimpleSal App.  The release with the change to the software
-    to fix the configuration error will follow (soon) and the repository Application may be
-    explored by the developer by comparing the early nonworking version with the working version.
-
-    Any repository has the ability to manage even single-letter changes to source files.
-
-    The intention is to demonstrate the hidden complexities within ssTEA that support the main
-    educational goal.  Extensive explanatory messages are enabled in the failing version simply
-    to show how the explanatory messages communicate the condition of the App to the developer.
-
-    The change from nonworking to working will eliminate many of the messages during init State;
-    then the periodic display of the ssTEA API information for each Event will pop some eyeballs.
-
-    The App with messages fully enabled may hide the signal for the serial port each period.
+    SimpleSal App "app-events" published to demonstrate ssTEA concepts and functionality.
 
     The 1-second output to the serial port shows Time progressing, the Built-In LED is turned ON
     at the start of a 5-second period, and then an Event occurs 3 seconds later to turn it OFF.
 
+    The 1-second output and 5-second LED off->on transition are controlled by classic Arduino Time.
+    The 3-second LED on-off transition is controlled by an ssTEA Event granted Agency to execute.
+
+    This App also demonstrates the shared data space between the co-existing App and ssTEA software.
+
 ------------------------------------------
+
+    The first release was completed into a properly function SimpleSal App, and then the
+    software was modified to not work.  The modifications will be explored, one change and
+    release through the repository at a time.  This will demonstrate ssTEA development/debug tools.
+
+------------------------------------------
+
+    The intention is to demonstrate the hidden complexities within ssTEA that support the main
+    educational goal.  Extensive explanatory messages are enabled in the failing version simply
+    to show how ssTEA explanatory messages communicate the condition of the App to the developer.
+
+    The change from nonworking to working will eliminate many of the messages during init State;
+    then the periodic display of the ssTEA API information for each Event will show how ssTEA works.
+
+    The App with messages fully enabled may hide the signal for the serial port each period.
+
+------------------------------------------
+
 =====================
 
  Copyright (c) 2026  TruSoft Computing LLC.  All Rights Reserved.

@@ -1,6 +1,6 @@
 ------------------------------------------
 
-   This file thinks it is:    FUTURES in the SimpleSal/app-events repository human metadata.
+   This file thinks it is:    FUTURES  in the SimpleSal/app-events repository human metadata.
 
    The managed object, for TSC LLC repos, is a directory in the repo root (i.e., rr\app-events\).
 
@@ -10,7 +10,7 @@
 
 TruSoft Computing LLC
 
- S~S  SimpleSal repository human metadata documents: FUTURES predicted of published content
+ S~S  FUTURES metadata: "SimpleSal Time and Event Management" software.
 
 =====================
 
@@ -18,7 +18,11 @@ TruSoft Computing LLC
 
 ------------------------------------------
 
-    * This very specific use of ssTEA is limited to a display of the value of "the Current Time".
+    TSC LLC Version Identifier 260216
+
+    Notice in the software that the controlling Time values are constants and based on seconds.
+    The next version will change these to build-time #defines that support a millisecond basis.
+    That is to say: the software will not change and the LED activity rate will vary by build.
 
 ------------------------------------------
 

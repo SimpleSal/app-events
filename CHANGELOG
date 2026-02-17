@@ -38,6 +38,36 @@ TruSoft Computing LLC
 
      branch                 main-app-events
 
+       label on branch      release-260216
+
+ Date of Publishment        February 16, 2026
+
+ TSC LLC Version Identifier 260216
+
+ Human version Identifier   v0.9b
+
+------------------------------------------
+
+=====================
+
+ S~S  Release notes version 260216: basis for "SimpleSal App bringup", which is "app-events".
+
+------------------------------------------
+
+    SimpleSal App "app-events" published to demonstrate ssTEA concepts and functionality.
+
+=====================
+
+------------------------------------------
+
+ S~S Changes to a repository have been published by SimpleSal:
+
+ GitHub username            SimpleSal
+
+   repository               app-events
+
+     branch                 main-app-events
+
        label on branch      release-260212
 
  Date of Publishment        February 12, 2026

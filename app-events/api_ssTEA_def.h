@@ -1,7 +1,10 @@
-/**************   license-text-string   copyright-text-string  ***
+/* -- SimpleSal: ssTEA, ssUI, and ssIO | Copyright (C) 2025, 2026 TruSoft Computing LLC |  All rights reserved. --
+   This software is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+   This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+   ---------------------------------------------------------------------------------------------------
+ *
  * api_ssTEA_def.h      data and software definitions: application API (software interface) to ssTEA
  *
- * 2025/11/25   instantiates a minimum application to demonstrate the range of SimpleSal function.
  **************************************************************************************************/
 #ifndef __API_SSTEA_DEF_H
 #define __API_SSTEA_DEF_H
@@ -127,9 +130,12 @@ ssE_pAboutEv_t     AboutEvDB_dbOp_Put (ssE_pAboutEv_t pReleaseThis)
 // This is a tool that creates a burden over time: it displays all actual build options selected.
 // This model of ifdef-to-select-code makes the same function available to every build; varies here.
 // -------------------------------------------------------------------------------------------------
+// This function is always referencable, whether it has content or not depends on the build options.
+// Moving the SHOW #ifdef outside the function causes the reference in source to require an #ifdef.
+// -------------------------------------------------------------------------------------------------
 // This is not provided as part of ssTEA or ssUI so that the changes occur in files owned by a user.
 // -------------------------------------------------------------------------------------------------
-// All build-selecting choices must have been made by this time; a change later makes this wrong.
+// All build choices must have been made by this time; a change later in the compile is not reported.
 // -------------------------------------------------------------------------------------------------
 void    App_BuildOp_Show_Build (void)
 {
