@@ -1,16 +1,11 @@
-------------------------------------------
 
-   This file thinks it is:   RELEASE  in the SimpleSal/app-events repository human metadata.
+   This file thinks it is:  RELEASE in the SimpleSal/app-events repo root
 
-   The managed object, for TSC LLC repos, is a directory in the repo root (i.e., rr\app-events\).
-
-------------------------------------------
-
-=====================
+====================
 
 TruSoft Computing LLC
 
- S~S  SimpleSal repository human metadata template documents: RELEASE notes for the consumer
+ S~S  SimpleSal repository human metadata: RELEASE notes for the consumer
 
 =====================
 
@@ -38,37 +33,57 @@ TruSoft Computing LLC
 
      branch                 main-app-events
 
-       label on branch      release-260216
+       label on branch      release-260327
 
- Date of Publishment        February 16, 2026
+ Date of Publishment        March 27, 2026
 
- TSC LLC Version Identifier 260216
+ TSC LLC Version Identifier 260327
 
- Human version Identifier   v0.9b
+ Human version Identifier   v0.9c
 
 ------------------------------------------
 
 =====================
 
- S~S  Release notes version 260216: basis for "SimpleSal App bringup", which is "app-events".
+ S~S  Release notes, update to Alpha release candidate : app-events SimpleSal App
 
 ------------------------------------------
 
-    SimpleSal App "app-events" published to demonstrate ssTEA concepts and functionality.
+    SimpleSal dependency alert: the software in this App identified FIXITs in SimpleSal.
 
-    The 1-second output to the serial port shows Time progressing, the Built-In LED is turned ON
-    at the start of a 5-second period, and then an Event occurs 3 seconds later to turn it OFF.
-
-    The 1-second output and 5-second LED off->on transition are controlled by classic Arduino Time.
-    The 3-second LED on-off transition is controlled by an ssTEA Event granted Agency to execute.
-
-    This App also demonstrates the shared data space between the co-existing App and ssTEA software.
+         This software requires the version of SimpleSal labeled 260327 (v0.9f).
 
 ------------------------------------------
 
-    The first release was completed into a properly function SimpleSal App, and then the
-    software was modified to not work.  The modifications will be explored, one change and
-    release through the repository at a time.  This will demonstrate ssTEA development/debug tools.
+    This release of software contains at least one error at runtime that results in a hard fault.
+
+    Unless this software is configured in such a way that makes the hard fault not occur, that is.
+
+------------------------------------------
+
+    This release generates two warnings during the compilation, for variables defined but used.
+    This violates the release principles of SimpleSal and SimpleSal Apps published by TSC LLC.
+    The purpose is to allow the developer to fix a small error and see the compiler react to it.
+
+------------------------------------------
+
+    The term "Alpha release candidate" implies the consumer should expect it to work as described.
+    The developer will, on the other hand, be pleasantly surprised when it does work as described.
+
+    The developer asserts that this version of the App is working as requested by the user.
+
+------------------------------------------
+
+    The educational goals of SimpleSal cause a release that can be debugged and fixed on video.
+
+    The "v0.9b" repo commit contained multiple errors by the App working with ssTEA Events.
+    In addition, the ability to see or plot statistics from the App was not implemented.
+
+    The v0.9b software contains what are assumed to be the common mistakes new users will make.
+
+    The v0.9c software was modified to work, while the hard fault caused was not found and so
+    the v0.9c software uses a workaround to avoid the result.  The modifications, one change at
+    a time, will be a video on simplesal.substack.com, to quickly demo ssTEA development/debug tools.
 
 ------------------------------------------
 
@@ -76,10 +91,8 @@ TruSoft Computing LLC
     educational goal.  Extensive explanatory messages are enabled in the failing version simply
     to show how ssTEA explanatory messages communicate the condition of the App to the developer.
 
-    The change from nonworking to working will eliminate many of the messages during init State;
-    then the periodic display of the ssTEA API information for each Event will show how ssTEA works.
-
-    The App with messages fully enabled may hide the signal for the serial port each period.
+    The change from nonworking to working eliminates non-App messages during initialization; then,
+    the periodic display of the ssTEA statistics for each Event will show ssTEA at runtime.
 
 ------------------------------------------
 

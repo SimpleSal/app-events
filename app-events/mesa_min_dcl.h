@@ -118,6 +118,10 @@ typedef     Ascii_t        *pAscii_t;           // pointing to a value of that s
 
 typedef     Ascii_t         AsciiA_t;           // the first of N Ascii_t values, N is > 0
 typedef     AsciiA_t       *pAsciiA_t;          // pointing to the first of N Ascii_t values
+#define     pAsciiANull     ((pAsciiA_t) NULL)  // NOT pointing to any array of N Ascii_t values
+
+#define     S(inquotesAsciiArray)   ((pAsciiA_t) inquotesAsciiArray)
+#define     pAAN                    (pAsciiANull)
 
 #define     Ascii_NUL       ((Ascii_t) ('\0'))
 #define     Ascii_BS        ((Ascii_t) ('\b'))
@@ -211,10 +215,6 @@ typedef     AsciiA_t       *pAsciiA_t;          // pointing to the first of N As
 #define     Ascii_isHexDigit_UC(c)  (Ascii_isDigit(c) || ((c >= Ascii_A) && (c <= Ascii_F)))
 
 #define     Ascii_digit_toInt(c)    (Ascii_isDigit(c) ? (c - Ascii_0) : (0))
-
-#define     S(inquotesAsciiArray)   ((pAsciiA_t) inquotesAsciiArray)
-#define     pAsciiANull             ((pAsciiA_t) NULL)
-#define     pAAN                    (pAsciiANull)
 
 void        mesa_uiOp_emit_pAsciiA              (pAsciiA_t pAsciiA);
 #define     mesa_uiOp_emit_qAsciiA(InQuotes)    mesa_uiOp_emit_pAsciiA ((pAsciiA_t) (InQuotes))

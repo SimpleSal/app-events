@@ -18,41 +18,45 @@
 // -------------------------------------------------------------------------------------------------
 ssE_EvResult_t App_Launch_in_ssTEA (ssUI_db_pEvApi_t pEvApi)
 {
+    ssE_EvResult_t  Launch_Result = ssE_EvResult_OK_go;
+
     App_Announce_App ("Launching Event in ssTEA");
     App_Announce_App (pEvApi->pEvApiNameTkn_App->pAsciiA);
 
     if (ssUI_apiSignalOp_Emit (pEvApi, ss_ApiSigMsgValue_AgApifsm_Validate))
     {
-        App_Announce_ssTEA ("Event Agency Descriptor <validate> succeeded");
+        App_Announce_Event ("Event's AboutEvent data <validate> succeeded");
         if (ssUI_apiSignalOp_Emit (pEvApi, ss_ApiSigMsgValue_AgApifsm_Run))
         {
-            App_Announce_ssTEA ("Agency Api FSM <On Running> succeeded");
+            App_Announce_Event ("Agency Api FSM <On Running> succeeded");
             if (ssUI_apiSignalOp_Emit (pEvApi, ss_ApiSigMsgValue_AgRunfsm_Start))
             {
-                App_Announce_ssTEA ("Agency Run FSM <Start> succeeded");
-#ifdef APP_OPTIN_ANNOUNCE_SSTEA
-                ss_uiOp_Show_Apifsm_state (pEvApi->pssTEA_ApiSig, pApiSigName (pEvApi));
-                ss_uiOp_Show_Runfsm_state (pEvApi->pssTEA_ApiSig, pApiSigName (pEvApi));
-#endif // APP_OPTIN_ANNOUNCE_SSTEA
-                return (ssE_EvResult_OK_go);
+                App_Announce_Event ("Agency Run FSM <Start> succeeded");
             }   // Start succeeded
             else
             {   // Start failed
-                App_Announce_ssTEA ("Error: Agency Run FSM failed to enter <Agencying>");
-                return (ssE_EvResult_notOK_state);
+                App_Announce_Event ("Error: Agency Run FSM failed to start <Agencying>");
+                Launch_Result = ssE_EvResult_notOK_state;
             }   // Start failed
         }   // Run succeeded
         else
         {   // Run failed
-            App_Announce_ssTEA ("Error: Agency Api FSM failed to enter <On Running>");
-            return (ssE_EvResult_notOK_state);
+            App_Announce_Event ("Error: Agency Api FSM failed to enter <On Running>");
+            Launch_Result = ssE_EvResult_notOK_state;
         }   // Run failed
     }   // Validate succeeded
     else
     {   // Validate failed
-        App_Announce_ssTEA ("Error: Event Agency Descriptor <validate> failed");
+        App_Announce_Event ("Error: Event's AboutEvent data <validate> failed");
         return (ssE_EvResult_notOK_state);
     }   // Validate failed
+
+#ifdef APP_OPTIN_ANNOUNCE_APP
+    ss_uiOp_Show_Apifsm_state (pEvApi->pssTEA_ApiSig, pApiSigName (pEvApi));
+    ss_uiOp_Show_Runfsm_state (pEvApi->pssTEA_ApiSig, pApiSigName (pEvApi));
+#endif // APP_OPTIN_ANNOUNCE_APP
+
+    return (Launch_Result);
 }   // App_Launch_in_ssTEA
 // =================================================================================================
 // =================================================================================================

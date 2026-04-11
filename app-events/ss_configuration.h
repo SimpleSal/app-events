@@ -153,7 +153,7 @@ unsigned long int ssT_rawCt_msNow (unsigned long int usCt)
 
 /* simplest */ #define      SSTEA_OPTIN_SHOW_PATH
 /* simplest */ #define      SSTEA_OPTIN_SHOW_CAUSE
-/* simplest */ #define      SSTEA_OPTIN_SHOW_NOTES
+/* simplest */ #define      SSTEA_OPTIN_SHOW_FACTS
 /* simplest */ #define      SSTEA_OPTIN_SHOW_SIGNALS
 
 /* simplest */ #define      SSUI_OPTIN_INCLUDE_CMDS_IN_SSUI_SSUI
@@ -319,6 +319,8 @@ unsigned long int ssT_rawCt_msNow (unsigned long int usCt)
 #define  SSUI_UIBUFFER_ALLOC  (60+2+1) // <0-60 Ascii values><0-2 Ascii input terminators><1 nul>
 
 #define  SSUI_ONEOF_CONTROL_INIT_RUNTIME
+
+#define  ssUI_Default_Verbosity     false
 
 // -------------------------------------------------------------------------------------------------
 // ssUI uses a command FSM to execute arrays of commands; this control includes ssUI's arrays.

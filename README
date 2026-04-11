@@ -1,10 +1,5 @@
-------------------------------------------
 
-   This file thinks it is:    README  in the SimpleSal/app-events repository human metadata.
-
-   The managed object, for TSC LLC repos, is a directory in the repo root (i.e., rr\app-events\).
-
-------------------------------------------
+   This file thinks it is:  README in the SimpleSal/app-events   repo root
 
 =====================
 
@@ -22,6 +17,25 @@
 
 =====================
 
+  S~S This Repository is not the same as other Repositories
+
+    Different from common industry standards using a repository to control working software.
+
+    In support of the educational content and goals of the SimpleSal ecosystem, this repository is
+    used to describe changes over Time made to App software while getting a SimpleSal App to work.
+
+    The idea needs a starting point: the App software using ssTEA fails to build or work.  The
+    problem is showing a human the difference between "fails" and "co-exists" over multiple steps.
+    The repository management UI, the Repo App, provides this comparison as a basic feature.  Cool.
+
+    Each set of source files contained in a repository "commit" exists somewhere along a path from
+    "App fails to build or work" to "App co-exists with ssTEA".  The metadata in RELEASE for each
+    commit identifies the point along the path at which the set of source files exists.  Different.
+
+------------------------------------------
+
+=====================
+
   S~S The Elevator Pitch
 
 ------------------------------------------
@@ -34,7 +48,7 @@
 
     A SimpleSal App co-exists with ssTEA, software that is a Time Keeper and an Event Manager.
 
-    This basic App reports "the current Time" maintained by ssTEA, over Time, using Time/Data Events.
+    This basic App demonstrates the App and ssTEA co-existing while Events occur over Time.
 
 ------------------------------------------
 
@@ -46,19 +60,33 @@
 
  S~S  What is the purpose of the objects in this repository or repo?
 
-    * The repo contains an example of the simplest or most basic SimpleSal App: display the Time.
-      The difference with the app-time basic SimpleSal App is that Time and Data Events are used.
+    * The repo contains an example of the simplest or most basic SimpleSal App: make Events occur.
+      The difference with the app-time basic SimpleSal App is that ssTEA Time and Data Events are used.
+      This App also demonstrates the shared data space between the co-existing App and ssTEA software.
 
-      * Even the simplest of Apps may be configurable at build time.  This App will either build to
-        set "the Current Time" as: zero, or, the Time at which the software was built (BuiltAt).
+      The App uses the Arduino Built-In LED and the serial port to create a visual display of periodic
+      moments in Time occuring.  Variations in the baud rate affect the visual of the serial port.
 
-            In the former, the numbers displayed appear to be a count-up timer, from zero.
-            In the latter, the numbers displayed appear to be a strange clock, showing the Time.
+        * when the App loop function executes, a single Ascii value is displayed each second.
+        * when the App loop function executes, the Built-In LED is turned ON every 5 seconds.
+        * when the Time Event occurs as configured by the App, the Event turns off the LED
+          and causes the Data Event to resume and display a sequence of Ascii characters.
+        * when the Data Event occurs as configured by the App and resumed by the Time Event,
+           the characters "sent" by the Time Event are displayed (generating a longer Ascii pulse).
 
-        The alternative would require two repos, each with an App identical except in name and
-        a few lines of source code difference in the App: Time initialization to zero or BuiltAt.
+      A 1-second periodic serial port LED short pulse; a 5-second periodic serial port longer pulse;
+      the Built-in LED is ON for seconds 1, 2, and 3; the built-in LED is OFF for seconds 4 and 5.
 
-    * Quick explanation of the value being displayed by the App:
+      Changing these numbers in the App to 100, 500, and 300 milliseconds changes the blink rate.
+
+    * There are build-time configurations with this App, and with ssTEA.  These variations are
+      concerned with the debug and App and ssTEA values displayed to the user via the serial port.
+
+      ssTEA has run-time configurations controlling values displayed while the API and Events occur.
+
+      The RELEASE metadata does not describe the build/run-time changes.  The Repo UI displays them.
+
+    * Quick explanation of any Time value being displayed by the App:
 
         [flags|days.hours.minutes.seconds.milliseconds.microseconds.nanoseconds.plancks]
 
@@ -66,17 +94,15 @@
 
 ------------------------------------------
 
-    * The purpose of displaying the Time or Timer is to allow an external comparison between what
-      the processor running at a frequency is calculating and what is known or trusted to be right.
-
-      When a processor is executing a signal algorithm, knowledge of Time is fundamental.  When
-      the processor slows down due to heat, the algorithm within the processor cannot perceive it.
+    * The purpose of indicating moments in Time is to allow an external comparison between what
+      the processor (running at a frequency) is calculating, and what is trusted to be correct.
 
       This is what complex multi-processor chip software does to detect one processor overheating;
       when the processor heats up, it slows down, and its calculation of Time begins to slow also.
+      Problem: the processor cannot look at itself and judge whether it is slowing down or not.
 
-      Another processor, known to never overload, perceives the slow down and reduces frequencies.
-      The reduction in the frequency will reduce the amount of heat generated by the frequency.
+      Another processor, known to never overload, provides a "micros ()" value whose rate is constant.
+      That processor, visible to all processor, is used to balance both power and frequencies.
 
       And this is just the first SimpleSal App, on the road to writing signal algorithm software!
 
@@ -86,18 +112,18 @@
 
    * The managed object is everything, and only that, in the rr\app-events\ directory
 
-       * this App works with any version of SimpleSal, therefore there is no rr\app-events\SimpleSal\
+       * there is no rr\app-events\SimpleSal\
 
        * rr\app-events\app-events.ino
 
-       * rr\app-events\*.h
+       * rr\app-events\mesa*.h   and   ss_configuration.h
 
          the App depends on SimpleSal; the "mesa*.h" and "ss_configuration.h" file are derived from
          the version of SimpleSal named in the release note (see SimpleSal/simplesal README).
 
-       * because this App does initiate Time and Data Events, the ssTEA helper for the API ia used.
+       * rr\app-events\api_ssTEA_*.h
 
-    * TSC LLC promises industry-industry standard backwards compatibility: old stuff always works.
+         This is App software that implements interactions with the ssTEA API: perform management.
 
 ------------------------------------------
 
@@ -107,6 +133,9 @@
     (depending on your ability to configure the repo App to only consider files matching filters).
 
     The only reason to have a metadata copy locally is if files are being modified for a release.
+    Readers still awake will realize the SimpleSal metadata about the directory content will
+    match the name and therefore overwrite a conventional software package's local metadata files.
+    This is a disadvantage resulting from TSC LLC separating the managed object into a subdirectory.
 
 ------------------------------------------
 

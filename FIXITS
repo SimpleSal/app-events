@@ -1,0 +1,60 @@
+
+   This file thinks it is:  FIXITS in the SimpleSal/app-events   repo root
+
+=====================
+
+TruSoft Computing LLC
+
+ S~S  SimpleSal repository human metadata: link external information systems to repo changes
+
+=====================
+
+------------------------------------------
+
+ GitHub username            SimpleSal
+
+   repository               app-events
+
+     branch                 main-app-events
+
+       label on branch      release-260327
+
+ Date of Publishment        March 27, 2026
+
+ TSC LLC Version Identifier 260327
+
+ Human version Identifier   v0.9c
+
+------------------------------------------
+
+=====================
+
+    Just the facts thank you.
+
+------------------------------------------
+
+    Broken in this version
+        F14B48      a Data Event launched successfully is put into Paused state by ssA
+        F14B56      specific configurations of EvApi allocations cause a hard fault in the App
+
+    Missing from this version
+        F14M33      serial input handling by App and/or ssUI
+        F14M35      missing a terminating condition on ssTEA error
+        F14M36      the forced Time Event is granted Agency based on the current OccursAt set by App
+                        (a canonical Time Event will recur and ssTEA will manage the new OccursAt).
+
+    Broken Fixed in this version
+        F14B16      Time Event (and others) fails in validation of event definition
+        F14B17      Stats Event fails to launch
+        F14B24      debug output hard faults if assignment to the pEvApi is not made first
+
+    Missing Added in this version
+        F14M34      statistics display all Events triggered by: Timer Event countdown timer
+
+------------------------------------------
+
+=====================
+
+ Copyright (c) 2026  TruSoft Computing LLC.  All Rights Reserved.
+
+

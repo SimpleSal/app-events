@@ -1,16 +1,11 @@
-------------------------------------------
 
-   This file thinks it is:  CHANGELOG in the SimpleSal/app-events repository human metadata.
-
-   The managed object, for TSC LLC repos, is a directory in the repo root (i.e., rr\app-events\).
-
-------------------------------------------
+   This file thinks it is:  CHANGELOG in the SimpleSal/app-events repo root
 
 =====================
 
 TruSoft Computing LLC
 
- S~S  SimpleSal repository human metadata template documents: CHANGELOG of release information
+ S~S  SimpleSal repository human metadata: CHANGELOG of previous RELEASE metadata
 
 =====================
 
@@ -55,6 +50,8 @@ TruSoft Computing LLC
 ------------------------------------------
 
     SimpleSal App "app-events" published to demonstrate ssTEA concepts and functionality.
+
+------------------------------------------
 
 =====================
 
