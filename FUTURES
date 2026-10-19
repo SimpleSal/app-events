@@ -1,6 +1,10 @@
 
    This file thinks it is:  FUTURES in the SimpleSal/app-events   repo root
 
+   This file is expected to unique to the repository as it is metadata about the Managed Blob
+
+------------------------------------------
+
 =====================
 
 TruSoft Computing LLC
@@ -9,25 +13,21 @@ TruSoft Computing LLC
 
 =====================
 
- S~S  Features, fixes, changes on the list of things we'd like to do:
+ S~S  Features of, fixes to, changes to this App that could be undertaken:
 
 ------------------------------------------
+
+    TSC LLC Version Identifier 261016
+
+    There is a hard fault bug in the app-events application or SimpleSal.
+    Finding and fixing this bug will be the focus of a specific set of videos on substack.
+
 
     TSC LLC Version Identifier 260216
 
     Notice in the software that the controlling Time values are constants and based on seconds.
     The next version will change these to build-time #defines that support a millisecond basis.
     That is to say: the software will not change and the LED activity rate will vary by build.
-
-------------------------------------------
-
-=====================
-
- S~S  Issues and conventions that SimpleSal and TSC LLC will not be changing
-
-------------------------------------------
-
-    * The goal of the SimpleSal educational environment is to introduce ideas and then move on.
 
 ------------------------------------------
 

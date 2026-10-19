@@ -1,6 +1,8 @@
 
    This file thinks it is:  CHANGELOG in the SimpleSal/app-events repo root
 
+------------------------------------------
+
 =====================
 
 TruSoft Computing LLC
@@ -9,23 +11,9 @@ TruSoft Computing LLC
 
 =====================
 
- S~S TruSoft Computing LLC (TSC LLC) Repository Philosophy
+ S~S Changes to a repository have been published by SimpleSal
 
 ------------------------------------------
-
- S~S  The Philosophy is stated somewhere else.
-
-   The SimpleSal repository README explains how a SimpleSal App, such as this one, is constructed.
-
-   There is additional information available on the "substack.com" site for user "SimpleSal".
-
-------------------------------------------
-
-=====================
-
-------------------------------------------
-
- S~S Changes to a repository have been published by SimpleSal:
 
  GitHub username            SimpleSal
 
@@ -33,7 +21,108 @@ TruSoft Computing LLC
 
      branch                 main-app-events
 
-       label on branch      release-260216
+       label on branch      publish-261016
+
+ Date of Publishment        October 16, 2026
+
+ TSC LLC Version identifier 261016
+
+ Human version identifier   v1.0.0
+
+------------------------------------------
+
+    SimpleSal Soft Open publishment
+
+------------------------------------------
+
+=====================
+
+ S~S Changes to a repository have been published by SimpleSal
+
+------------------------------------------
+
+ GitHub username            SimpleSal
+
+   repository               app-events
+
+     branch                 main-app-events
+
+       label on branch      (none)
+
+ Date of Publishment        March 27, 2026
+
+ TSC LLC Version Identifier 260327
+
+ Human version Identifier   v0.9c
+
+------------------------------------------
+
+=====================
+
+ S~S  Release notes, update to Alpha publishment candidate : app-events SimpleSal App
+
+------------------------------------------
+
+    SimpleSal dependency alert: the software in this App identified FIXITs in SimpleSal.
+
+         This software requires the version of SimpleSal labeled 260327 (v0.9f).
+
+------------------------------------------
+
+    This publishment of software contains at least one error at runtime that results in a hard fault.
+
+    Unless this software is configured in such a way that makes the hard fault not occur, that is.
+
+------------------------------------------
+
+    This publishment generates two warnings during the compilation, for variables defined but used.
+    This violates the publishment principles of SimpleSal and SimpleSal Apps published by TSC LLC.
+    The purpose is to allow the developer to fix a small error and see the compiler react to it.
+
+------------------------------------------
+
+    The term "Alpha publishment candidate" implies the consumer should expect it to work as described.
+    The developer will, on the other hand, be pleasantly surprised when it does work as described.
+
+    The developer asserts that this version of the App is working as requested by the user.
+
+------------------------------------------
+
+    The educational goals of SimpleSal cause a publishment that can be debugged and fixed on video.
+
+    The "v0.9b" repo commit contained multiple errors by the App working with ssTEA Events.
+    In addition, the ability to see or plot statistics from the App was not implemented.
+
+    The v0.9b software contains what are assumed to be the common mistakes new users will make.
+
+    The v0.9c software was modified to work, while the hard fault caused was not found and so
+    the v0.9c software uses a workaround to avoid the result.  The modifications, one change at
+    a time, will be a video on simplesal.substack.com, to quickly demo ssTEA development/debug tools.
+
+------------------------------------------
+
+    The intention is to demonstrate the hidden complexities within ssTEA that support the main
+    educational goal.  Extensive explanatory messages are enabled in the failing version simply
+    to show how ssTEA explanatory messages communicate the condition of the App to the developer.
+
+    The change from nonworking to working eliminates non-App messages during initialization; then,
+    the periodic display of the ssTEA statistics for each Event will show ssTEA at runtime.
+
+------------------------------------------
+
+=====================
+
+ S~S Changes to a repository have been published by SimpleSal
+
+------------------------------------------
+
+ GitHub username            SimpleSal
+
+   repository               app-events
+
+     branch                 main-app-events
+
+       label on branch      (none)
 
  Date of Publishment        February 16, 2026
 
@@ -42,8 +131,6 @@ TruSoft Computing LLC
  Human version Identifier   v0.9b
 
 ------------------------------------------
-
-=====================
 
  S~S  Release notes version 260216: basis for "SimpleSal App bringup", which is "app-events".
 
@@ -55,9 +142,9 @@ TruSoft Computing LLC
 
 =====================
 
-------------------------------------------
+ S~S Changes to a repository have been published by SimpleSal
 
- S~S Changes to a repository have been published by SimpleSal:
+------------------------------------------
 
  GitHub username            SimpleSal
 
@@ -65,7 +152,7 @@ TruSoft Computing LLC
 
      branch                 main-app-events
 
-       label on branch      release-260212
+       label on branch      (none)
 
  Date of Publishment        February 12, 2026
 
@@ -74,8 +161,6 @@ TruSoft Computing LLC
  Human version Identifier   v0.9a
 
 ------------------------------------------
-
-=====================
 
  S~S  Release notes version 260212: app-events repository activity: create the repository
 

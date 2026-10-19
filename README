@@ -1,42 +1,15 @@
 
    This file thinks it is:  README in the SimpleSal/app-events   repo root
 
-=====================
-
- S~S TruSoft Computing LLC (TSC LLC) Repository Philosophy
-
-------------------------------------------
-
- S~S  The Philosophy is stated somewhere else.
-
-   The SimpleSal repository README explains how a SimpleSal App, such as this one, is constructed.
-
-   There is additional information available on the "substack.com" site for user "SimpleSal".
-
 ------------------------------------------
 
 =====================
 
-  S~S This Repository is not the same as other Repositories
-
-    Different from common industry standards using a repository to control working software.
-
-    In support of the educational content and goals of the SimpleSal ecosystem, this repository is
-    used to describe changes over Time made to App software while getting a SimpleSal App to work.
-
-    The idea needs a starting point: the App software using ssTEA fails to build or work.  The
-    problem is showing a human the difference between "fails" and "co-exists" over multiple steps.
-    The repository management UI, the Repo App, provides this comparison as a basic feature.  Cool.
-
-    Each set of source files contained in a repository "commit" exists somewhere along a path from
-    "App fails to build or work" to "App co-exists with ssTEA".  The metadata in RELEASE for each
-    commit identifies the point along the path at which the set of source files exists.  Different.
+  S~S The Elevator Pitch:   an App co-existing with Events
 
 ------------------------------------------
 
-=====================
-
-  S~S The Elevator Pitch
+    This SimpleSal App demonstrates the App and ssTEA co-existing while Events occur over Time.
 
 ------------------------------------------
 
@@ -48,31 +21,34 @@
 
     A SimpleSal App co-exists with ssTEA, software that is a Time Keeper and an Event Manager.
 
-    This basic App demonstrates the App and ssTEA co-existing while Events occur over Time.
-
 ------------------------------------------
 
 =====================
 
- S~S This Repository
+  S~S The purpose of the App:   app-events
 
 ------------------------------------------
 
- S~S  What is the purpose of the objects in this repository or repo?
+    * The repo holds an example of the simplest, most basic SimpleSal App: the App and Events co-exist.
 
-    * The repo contains an example of the simplest or most basic SimpleSal App: make Events occur.
       The difference with the app-time basic SimpleSal App is that ssTEA Time and Data Events are used.
       This App also demonstrates the shared data space between the co-existing App and ssTEA software.
 
       The App uses the Arduino Built-In LED and the serial port to create a visual display of periodic
       moments in Time occuring.  Variations in the baud rate affect the visual of the serial port.
 
-        * when the App loop function executes, a single Ascii value is displayed each second.
-        * when the App loop function executes, the Built-In LED is turned ON every 5 seconds.
-        * when the Time Event occurs as configured by the App, the Event turns off the LED
-          and causes the Data Event to resume and display a sequence of Ascii characters.
+        * the App loop function executes an FSM that emits a single Ascii value each second.
+          This FSM uses so-called classic or legacy Timekeeping methods.
+
+        * the App loop function executes an FSM that turns ON the Built-In LED every 5 seconds.
+          Each time the LED is turned ON, an ssTEA Time Event is scheduled to occur in 3 seconds.
+          This FSM uses ssTEA Timekeeping methods.
+
+        * when the Time Event occurs as configured by the App, the Event turns OFF the LED and ALSO
+          resumes the Data Event.  The Data Event given Agency displays a sequence of Ascii values.
+
         * when the Data Event occurs as configured by the App and resumed by the Time Event,
-           the characters "sent" by the Time Event are displayed (generating a longer Ascii pulse).
+          the characters "sent" by the Time Event are displayed (generating a longer Ascii pulse).
 
       A 1-second periodic serial port LED short pulse; a 5-second periodic serial port longer pulse;
       the Built-in LED is ON for seconds 1, 2, and 3; the built-in LED is OFF for seconds 4 and 5.
@@ -84,46 +60,53 @@
 
       ssTEA has run-time configurations controlling values displayed while the API and Events occur.
 
-      The RELEASE metadata does not describe the build/run-time changes.  The Repo UI displays them.
-
-    * Quick explanation of any Time value being displayed by the App:
-
-        [flags|days.hours.minutes.seconds.milliseconds.microseconds.nanoseconds.plancks]
-
-        plancks and nanoseconds are not detectable, microseconds accuracy is platform-specific.
+      The RELEASE metadata does not describe the build/run-time changes.
 
 ------------------------------------------
 
-    * The purpose of indicating moments in Time is to allow an external comparison between what
-      the processor (running at a frequency) is calculating, and what is trusted to be correct.
+=====================
 
-      This is what complex multi-processor chip software does to detect one processor overheating;
-      when the processor heats up, it slows down, and its calculation of Time begins to slow also.
-      Problem: the processor cannot look at itself and judge whether it is slowing down or not.
+ S~S TruSoft Computing LLC (TSC LLC) Repository Philosophy
 
-      Another processor, known to never overload, provides a "micros ()" value whose rate is constant.
-      That processor, visible to all processor, is used to balance both power and frequencies.
+------------------------------------------
 
-      And this is just the first SimpleSal App, on the road to writing signal algorithm software!
+ S~S  The Philosophy is stated somewhere else.
+
+   The SimpleSal/simplesal repo README explains how a SimpleSal App, such as this one, is constructed.
+
+   There is additional information available on the "substack.com" site for user "SimpleSal".
+
+------------------------------------------
+
+=====================
+
+ S~S This Repository
 
 ------------------------------------------
 
  S~S  What are the contents of this repository?
 
+   * "rr\" means "repository root\"
+
    * The managed object is everything, and only that, in the rr\app-events\ directory
 
-       * there is no rr\app-events\SimpleSal\
+       * there is no rr\app-events\SimpleSal\           (in the App repo)
 
        * rr\app-events\app-events.ino
 
-       * rr\app-events\mesa*.h   and   ss_configuration.h
-
-         the App depends on SimpleSal; the "mesa*.h" and "ss_configuration.h" file are derived from
-         the version of SimpleSal named in the release note (see SimpleSal/simplesal README).
-
        * rr\app-events\api_ssTEA_*.h
+             This is App software that implements interactions with the ssTEA API: Event management.
 
-         This is App software that implements interactions with the ssTEA API: perform management.
+   * App Files are in the rr\app-events\SimpleSal directory (see configuration methods),
+     the files are used as-is but renamed in the directory.
+
+       * this App uses the configuration method where ".start" files are renamed and used as-is,
+         in addition this App places the "*.h" version of the "*.start" files with those files
+         in the rr\app-time\SimpleSal\ directory.  The files are owned by the App, not SimpleSal.
+
+       * this App works with any version of SimpleSal,
+
+         the rr\app-events\SimpleSal\ directory is needed, in the App managed object, for *.h files
 
 ------------------------------------------
 
@@ -141,11 +124,10 @@
 
  S~S  What about the version of the SimpleSal software the App co-exists with?
 
-    SimpleSal promises backwards compatibility with older versions; basic features do not disappear.
+    This specific version of app-time is part of a coherent SimpleSal-wide release of software.
 
-        This means users should be able to update to new versions, as needed, without side-effects.
-
-    Visit the username SimpleSal's repo named /simplesal, clone the latest "released" version tag.
+    At a minimum, this SimpleSal App will build with any SimpleSal version
+        released as or released after "V1.0.0" of 2026/10/16.
 
 ------------------------------------------
 
