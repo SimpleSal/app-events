@@ -3,8 +3,11 @@
    This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
    ---------------------------------------------------------------------------------------------------
  *
- * app-events.ino       Arduino main program demonstrating Time and Data Events based on ssTEA.
+ * app-events.ino       Arduino application demonstrating Time and Data Events based on ssTEA.
  *
+ * 2026/10/16   fsm Demo Arduino SimpleSal App released as "app-fsmDemo.ino" by TruSoft Computing LLC.
+ * 2025/08/06   special version appeared as the star of first videos published at SimpleSal substack.
+ * 2024/05/27   created superset FSM Demo Application as basis for ssTEA and SimpleSal dev/test.
  **************************************************************************************************/
 // =================================================================================================
 // -------------------------------------------------------------------------------------------------
@@ -32,6 +35,8 @@
 // -------------------------------------------------------------------------------------------------
 // =================================================================================================
 // -------------------------------------------------------------------------------------------------
+// SimpleSal App "app-time" minimally describes these few settings; "app-fsmDemo" fully describes.
+// -------------------------------------------------------------------------------------------------
 // TSC LLC has a software strategy: identify what is true about all processors running software
 // then hide the small differences with technical solutions in the build environment and software.
 // The #defines here referenced by the ssTEA software are a technical solution in the software.
@@ -56,9 +61,55 @@
 #define     HOST_ONEOF_ssHL_defines_Null
 
 // -------------------------------------------------------------------------------------------------
-// The definition of the simplest configuration depends on the file the build tool finds and uses,
-// the only path requirement within ssTEA is that the compiler find the directory "SimpleSal\".
-// The ability to set the path the compiler uses to lookup included files is a technical solution.
+// The file ".\SimpleSal\mesas_configuration.start" contains very specific words used by SimpleSal,
+// the definition of the words does not have to be done by the SimpleSal file, it can be done here.
+// -------------------------------------------------------------------------------------------------
+#define     MESA_OPTIN_RANDOM_NUMBERS
+
+#define     THIS_BUILDS_BAUD_RATE  (38400)
+
+// #define MESA_ONEOF_CONTROL_INIT_BUILDTIME
+#define MESA_ONEOF_CONTROL_INIT_RUNTIME
+
+// =================================================================================================
+// -------------------------------------------------------------------------------------------------
+// Software portability across platforms requires operational levers built in that hide differences.
+// The levers are defined in "mesas_min_dcl" and "mesas_min_def"; ssTEA uses micros() and Ascii.
+// -------------------------------------------------------------------------------------------------
+// Only the output services of ssUI are used in this App; no Ascii input is detected or consumed.
+// The baud rate given to the serial device is specified in "mesas_min_def.h": THIS_BUILDS_BAUD_RATE.
+// -------------------------------------------------------------------------------------------------
+// This SimpleSal App is meant to build with "mesas_min_dcl.start" with extension changed to ".h".
+// -------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
+// define which functionality within the MIN definition should be included, before including this.
+// -------------------------------------------------------------------------------------------------
+#include ".\SimpleSal\mesas_min_dcl.h"
+
+// -------------------------------------------------------------------------------------------------
+// Arduino picked some words years ago, there is no reason we can't create a meaningful word to use.
+// Virtual (ssIO) and new tech in chipset pins may create additional mutually exclusive attributes.
+// -------------------------------------------------------------------------------------------------
+typedef enum PinMode_e
+{
+    mesaPinMode_INPUT_NOPULLUP = INPUT,
+    mesaPinMode_INPUT_PULLEDUP = INPUT_PULLUP,
+    mesaPinMode_OUTPUT = OUTPUT
+}   PinMode_t;
+
+// -------------------------------------------------------------------------------------------------
+// The Classic Timekeeping implementation allows any software to use these Timekeeping variables.
+// In the "loop" function, something knows how to determine whether one millisecond has passed since
+// the last time the loop did something.  The FSM event (e.g., the count of microseconds reaching a
+// value that means a millisecond has occurred) marks the passage of time by incrementing a counter.
+// -------------------------------------------------------------------------------------------------
+// Within a demonstration App, these represent the App as it existed, before ssTEA was added to it.
+// -------------------------------------------------------------------------------------------------
+unsigned long int   mesa_gCtOf_1usThis1ms;    // # of microsecond periods this 1 millisecond period
+unsigned long int   mesa_gCtOf_1msThis100ms;  // # of millisecond periods this 100 millisecond period
+unsigned long int   mesa_gCtOf_100msThis1sc;  // # of 100 millisecond periods this 1 second period
+unsigned long int   mesa_gCtOf_1msThisCycle;  // # of millisecond periods this X millisecond period
+
 // -------------------------------------------------------------------------------------------------
 // This SimpleSal App is meant to build with "SimpleSal\ss_configuration.start" with the extension
 // changed to ".h". The include shows the "ss_configuration.h" is expected in the App directory.
@@ -68,25 +119,13 @@
 
 #define     SSE_ACTIVE_EVENTS_CT_REQUESTED       (6)
 
-#include "ss_configuration.h"
+#include ".\SimpleSal\ss_configuration.h"
 
 // -------------------------------------------------------------------------------------------------
 // The simplest configuration selection to show build options can be undone with #undef; this works
 // for any definition that is NOT used IN ss_configuration.h to extend the configuration definition.
 // -------------------------------------------------------------------------------------------------
 #undef      SS_OPTIN_SHOW_BUILD_OPTIONS
-
-// =================================================================================================
-// -------------------------------------------------------------------------------------------------
-// Software portability across platforms requires operational levers built in that hide differences.
-// The levers are defined in "mesa_min_dcl" and "mesa_min_def"; ssTEA uses micros() and Ascii.
-// -------------------------------------------------------------------------------------------------
-// Only the output services of ssUI are used in this App; no Ascii input is detected or consumed.
-// The baud rate given to the serial device is specified in "mesa_min_def.h": THIS_BUILDS_BAUD_RATE.
-// -------------------------------------------------------------------------------------------------
-// This SimpleSal App is meant to build with "mesa_min_dcl.start" with extension changed to ".h".
-// -------------------------------------------------------------------------------------------------
-#include "mesa_min_dcl.h"
 
 // -------------------------------------------------------------------------------------------------
 // Using ssTEA data types, App data types for Events may be declared HERE.  ssTEA Event Agency uses
@@ -99,7 +138,7 @@
 // The data structures used as an organizing concept "about" any object are signal carriers; the
 // organization of the signal carriers and the relationship they support influences the algorithms.
 // -------------------------------------------------------------------------------------------------
-#include "SimpleSal\ssTEA\ssTEA_data_dcl.h"
+#include ".\SimpleSal\ssTEA\ssTEA_data_dcl.h"
 
 #define     APP_DATA_ALLOC      (40)
 #define     APP_DATA_MAX_I      (APP_DATA_ALLOC-1)
@@ -126,30 +165,51 @@ void        App_HeyProcessThis (pAsciiA_t  pReceivedInput);
 
 // -------------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------------
-#include "SimpleSal\ss_include_dcl.h"
+#include ".\SimpleSal\ss_include_dcl.h"
+
+// the definition of the words does not have to be done by the SimpleSal file, it can be done here.
+// -------------------------------------------------------------------------------------------------
+#define mesa_ONEOF_Default_LED_RO_owner             RO_owner_Anybody
+#define mesa_ONEOF_Default_LED_RO_active            RO_active_classic
+#define mesa_ONEOF_Default_Ascii_RO_owner           RO_owner_Anybody
+#define mesa_ONEOF_Default_Ascii_RO_active          RO_active_AllOfUIs
+#define mesa_ONEOF_Default_LED_Matrix_RO_owner      RO_owner_Anybody
+#define mesa_ONEOF_Default_LED_Matrix_RO_active     RO_active_classic
+
+
 
 // -------------------------------------------------------------------------------------------------
-// This SimpleSal App is meant to build with "mesa_min_def.start" with extension changed to ".h".
+// This SimpleSal App is meant to build with "mesas_min_def.start" with extension changed to ".h".
 // -------------------------------------------------------------------------------------------------
-#include "mesa_min_def.h"
+// To override the default content in "mesas_min_def.h", #define the value before including file.
+// -------------------------------------------------------------------------------------------------
+#include ".\SimpleSal\mesas_min_def.h"
 
 // -------------------------------------------------------------------------------------------------
-// Because ssUI co-exists with the App, it needs to begin existence with Resources correlated to App
+// Because the App co-exists with ssTEA/ssUI, a semaphore FSM is used to gate access based on owner.
+// Verbosity initializes the ssUI FSM generating extensive run-time Ascii text info to "Say it!".
 // -------------------------------------------------------------------------------------------------
-#define  ssUI_Default_LED_RO_state          mesa_RO_state_App
-#define  ssUI_Default_LED_RO_substate       mesa_RO_substate_none
-#define  ssUI_Default_Ascii_RO_state        mesa_RO_state_App
-#define  ssUI_Default_Ascii_RO_substate     mesa_RO_substate_none
-#define  ssUI_Default_Matrix_RO_state       mesa_RO_state_App
-#define  ssUI_Default_Matrix_RO_substate    mesa_RO_substate_none
+#define  ssUI_ONEOF_Default_LED_RO_owner            mesa_ONEOF_Default_LED_RO_owner
+#define  ssUI_ONEOF_Default_LED_RO_active           mesa_ONEOF_Default_LED_RO_active
+#define  ssUI_ONEOF_Default_Ascii_RO_owner          mesa_ONEOF_Default_Ascii_RO_owner
+#define  ssUI_ONEOF_Default_Ascii_RO_active         mesa_ONEOF_Default_Ascii_RO_active
+#define  ssUI_ONEOF_Default_LED_Matrix_RO_owner     mesa_ONEOF_Default_LED_Matrix_RO_owner
+#define  ssUI_ONEOF_Default_LED_Matrix_RO_active    mesa_ONEOF_Default_LED_Matrix_RO_active
+
+#define YES_BE_VERBOSE                              true
+#define DONT_BE_VERBOSE                             (!YES_BE_VERBOSE)
+
+#define ssUI_ONEOF_Default_Verbosity                YES_BE_VERBOSE
+
+void App_Select_UI (pAscii_t pInputSaysApp)  {  /* null implementation but exists */ }
 
 // -------------------------------------------------------------------------------------------------
 // Allocations of data and definition of functions with parameters, as declared by ss_include_dcl.h
 // -------------------------------------------------------------------------------------------------
-#include "SimpleSal\ss_include_def.h"
+#include ".\SimpleSal\ss_include_def.h"
 
 // -------------------------------------------------------------------------------------------------
-// The interfaces to the mesa, ssTEA and ssUI are now fully referenceable by App software.
+// The interfaces to the mesa, ssTEA and ssUI are now fully visible in the App's namespace.
 // -------------------------------------------------------------------------------------------------
 
 // =================================================================================================
@@ -198,7 +258,7 @@ void        App_HeyProcessThis (pAsciiA_t  pReceivedInput);
 #include "api_ssTEA_def.h"
 
 // -------------------------------------------------------------------------------------------------
-// The interfaces to everything outside the App are now fully referenceable by App software.
+// The interfaces to everything outside the App are now visible in the namespace of the compiler.
 // -------------------------------------------------------------------------------------------------
 
 // =================================================================================================
@@ -284,6 +344,7 @@ ReadOnly    pAsciiA_t   pcMsg_AppInit       = S("<mesa [P39] and App [app-events
 
 ReadOnly    pAsciiA_t   pcMsg_InitBanner    = S("SimpleSal App using Events initializing ssTEA...");
 ReadOnly    pAsciiA_t   pcMsg_AppCoexists   = S("SimpleSal App co-existing with ssTEA...");
+
 ReadOnly    pAsciiA_t   pcMsg_AppLauncherFailed = S("App Launcher failed");
 
 #else   // not APP_OPTIN_ANNOUNCE_APP
@@ -384,9 +445,6 @@ void App_ss_launch (void)
     // ---------------------------------------------------------------------------------------------
     App_EventLauncher ();
 
-    ss_uiOp_Show_ssTime_state ();
-    ss_uiOp_Show_ssAgency_state ();
-
 } // App_ss_launch
 // =================================================================================================
 #define setup   App_setup
@@ -409,9 +467,6 @@ void setup (void)       // the App's original setup function, ssTEA calls as App
 #endif  //  APP_OPTIN_SIGNAL_LOOPING
 
     // this content added to the App's original setup function, co-existence has a price.
-    mesa_Ascii_RO_state     = mesa_RO_state_App;
-    mesa_Ascii_RO_substate  = mesa_RO_substate_none;
-
     mesa_uiOp_deviceInitialize ();
 
     mesa_gCtOf_1usThis1ms     = 0;      // this App only tries to be active every 1000 milliseconds
@@ -558,11 +613,11 @@ void ssTEA_setup (void) // the one called by Arduino Host OS Api using the name 
     mesa_uiOp_emit_newline ();
     mesa_uiOp_emit_newline ();
 
-    ss_uiOp_pBanner (lfN, pcMsg_InitBanner, lfY);
+    ss_uiOp_emit_pBanner (lfN, pcMsg_InitBanner, lfY);
 
     App_ss_launch ();
 
-    ss_uiOp_pBanner (lfN, pcMsg_AppCoexists, lfY);
+    ss_uiOp_emit_pBanner (lfN, pcMsg_AppCoexists, lfY);
 
     mesa_uiOp_emit_newline ();
     mesa_uiOp_emit_newline ();
@@ -647,16 +702,16 @@ void    AppLoop_ssTEA_Interface (void)
     debug_Show_OneEvApi (pEvApi);
 
     // F14M36: the (forced) Time Event is granted Agency based on the current OccursAt set by App
-    ssT_mathOp_P1getsP2 (&pEvApi->pssTEA_ApiSig->ssE_pAboutEv->OccursAt, ssT_gpTime_Current);
-    ssT_mathOp_P1getsP1plusP2 (&pEvApi->pssTEA_ApiSig->ssE_pAboutEv->OccursAt, App_Duty_OnTime);
+    ssT_mathOp_P1getsP2 (&pEvApi->ssTEA_pApiSig->ssE_pAboutEv->OccursAt, ssT_gpTime_Current);
+    ssT_mathOp_P1getsP1plusP2 (&pEvApi->ssTEA_pApiSig->ssE_pAboutEv->OccursAt, App_Duty_OnTime);
 
 #ifdef APP_OPTIN_ANNOUNCE_EVENT
     App_Announce_Event ("Off Event scheduled @");
-    ss_uiOp_Show_Time (&pEvApi->pssTEA_ApiSig->ssE_pAboutEv->OccursAt, lfY);
+    ss_uiOp_Show_Time (&pEvApi->ssTEA_pApiSig->ssE_pAboutEv->OccursAt, lfY);
 #endif  // APP_OPTIN_ANNOUNCE_EVENT
 
     // assert: there is no path through this switch that does not set bItIsTime_ToStopAgency
-    switch (pEvApi->pssTEA_ApiSig->ssE_pAboutEv->Runfsm_state)
+    switch (pEvApi->ssTEA_pApiSig->ssE_pAboutEv->Runfsm_state)
     {
         case ssA_Runfsm_State_stopped   :
             bItIsTime_ToStopAgency = true;
@@ -720,7 +775,7 @@ ssE_EvResult_t App_EventLauncher (void)
 
     ssE_EvResult_t      EvResult;
 
-    App_Announce_App ("- App Launcher of Events: [Time, Data, Stats]");
+    ss_uiOp_emit_qBanner (lfY, "- App Launcher of Events: [Time, Data, Stats]", lfY);
 
     TimeEvent_pEvApi = ssUI_dbOp_Lookup_UsingEvApi_i (TIMEevent_EVENT_API);
     debug_Show_OneEvApi (TimeEvent_pEvApi);
@@ -848,7 +903,7 @@ ssE_EvResult_t App_TimeEvent_Define (ssUI_db_pEvApi_t pEvApi)
     // NOTE: ssUI provides an array of data structures, the App may alternatively use N variables.
     // The point here is the App must have data it knows about any medium within the App's context.
     // ---------------------------------------------------------------------------------------------
-    pApiSig = pEvApi->pssTEA_ApiSig;
+    pApiSig = pEvApi->ssTEA_pApiSig;
     ssE_pAboutEv = pApiSig->ssE_pAboutEv;
 
     // ---------------------------------------------------------------------------------------------
@@ -871,7 +926,7 @@ ssE_EvResult_t App_TimeEvent_Define (ssUI_db_pEvApi_t pEvApi)
 
     ssE_pAboutEv->Runfsm_EvType = ssE_EvType_Time;
     ssT_mathOp_P1getsP2 (&ssE_pAboutEv->OccursAt, ssT_gpTime_Current);
-    ssT_mathOp_P1getsP1plusP2 (&pEvApi->pssTEA_ApiSig->ssE_pAboutEv->OccursAt, App_StartTimeFromNow);
+    ssT_mathOp_P1getsP1plusP2 (&pEvApi->ssTEA_pApiSig->ssE_pAboutEv->OccursAt, App_StartTimeFromNow);
 
     // F14M36: the (forced) Time Event is granted Agency based on the current OccursAt set by App
     // F13M36: the (canonical) Time Event completes; ssTEA calculates OccursAt = Current + Period
@@ -1010,7 +1065,7 @@ ssE_EvResult_t App_DataEvent_Define (ssUI_db_pEvApi_t pEvApi)
         return (ssE_EvResult_notOK_state);
     }
 
-    pApiSig = pEvApi->pssTEA_ApiSig;
+    pApiSig = pEvApi->ssTEA_pApiSig;
     ssE_pAboutEv = pApiSig->ssE_pAboutEv;
 
     // ---------------------------------------------------------------------------------------------
@@ -1130,7 +1185,7 @@ ssE_EvResult_t App_StatsEvent_Define (ssUI_db_pEvApi_t pEvApi)
         return (ssE_EvResult_notOK_state);
     }
 
-    pApiSig = pEvApi->pssTEA_ApiSig;
+    pApiSig = pEvApi->ssTEA_pApiSig;
     ssE_pAboutEv = pApiSig->ssE_pAboutEv;
 
     ssE_pAboutEv->pEvFunc = &App_StatsEvent_Operate;
@@ -1139,7 +1194,7 @@ ssE_EvResult_t App_StatsEvent_Define (ssUI_db_pEvApi_t pEvApi)
     // use the OccursAt start Time value set by the Time Event (for itself) for Stats start Time
     TimeEvent_pEvApi = ssUI_dbOp_Lookup_UsingEvApi_i (TIMEevent_EVENT_API);
     ssT_mathOp_P1getsP2 (&ssE_pAboutEv->OccursAt,
-                         &TimeEvent_pEvApi->pssTEA_ApiSig->ssE_pAboutEv->OccursAt);
+                         &TimeEvent_pEvApi->ssTEA_pApiSig->ssE_pAboutEv->OccursAt);
 
     ssE_pAboutEv->recurs = true;
     ssE_pAboutEv->recursFromTrue = true;
@@ -1310,7 +1365,7 @@ void    App_CalcStats (void)
         {
             continue;
         }
-        if (pEvApi->pssTEA_ApiSig->Apifsm_state == ssA_Apifsm_state_off)
+        if (pEvApi->ssTEA_pApiSig->Apifsm_state == ssA_Apifsm_state_off)
         {
             continue;
         }
@@ -1323,24 +1378,24 @@ void    App_CalcStats (void)
 
         if (ssUI_apiSignalOp_Emit (pEvApi, ss_ApiSigMsgValue_AgApifsm_Stats))
         {
-            if (pEvApi->pssTEA_ApiSig->pApiSigData != pApiSigDataNull)
+            if (pEvApi->ssTEA_pApiSig->pApiSigData != pApiSigDataNull)
             {
                 ssA_statOp_Apifsm_P1getsP2
                     (
                         &ThisEv_All_Stats.Apifsm,
-                        (ssA_pApifsm_Stats_t) pEvApi->pssTEA_ApiSig->pApiSigData
+                        (ssA_pApifsm_Stats_t) pEvApi->ssTEA_pApiSig->pApiSigData
                     );
             }
         }   // Api signal for ApiFsm stats
 
         if (ssUI_apiSignalOp_Emit (pEvApi, ss_ApiSigMsgValue_AgRunfsm_Stats))
         {
-            if (pEvApi->pssTEA_ApiSig->pApiSigData != pApiSigDataNull)
+            if (pEvApi->ssTEA_pApiSig->pApiSigData != pApiSigDataNull)
             {
                 ssA_statOp_Runfsm_P1getsP2
                     (
                         &ThisEv_All_Stats.Runfsm,
-                        (ssA_pRunfsm_Stats_t) pEvApi->pssTEA_ApiSig->pApiSigData
+                        (ssA_pRunfsm_Stats_t) pEvApi->ssTEA_pApiSig->pApiSigData
                     );
             }   // params pointer is non-NULL
         }   // if Runfsm stats signal worked

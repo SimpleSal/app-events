@@ -1,63 +1,111 @@
 /* -- SimpleSal: ssTEA, ssUI, and ssIO | Copyright (C) 2025, 2026 TruSoft Computing LLC |  All rights reserved. --
    This software is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
    This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-   ---------------------------------------------------------------------------------------------------
  *
- * mesa_min_def.start   data and software definitions: mesa-specific dependencies of SimpleSal
+ * mesas_min_def.start        ssTEA, ssUI, and SimpleSal Apps depend upon Time and like Serial Ascii.
  *
+ * The App version of this file, "mesas_min_def.h", will change over Time under control of the App.
+ * SimpleSal suggests the App version exist outside the SimpleSal repo managed object (.\SimpleSal\).
+ * The contents of this file can of course be edited into any App file, the ownership is the App's.
+ *
+ * The LED, Ascii, and Random functionality in this default/minimum implementation is defined here.
+ * The declaration of functionality (prototypes) is the same whether the App or Mesa provides code.
  **************************************************************************************************/
-#ifndef __MESA_MIN_DEF_H
-#define __MESA_MIN_DEF_H
+#ifndef __MESAS_MIN_DEF_H
+#define __MESAS_MIN_DEF_H
+
 // =================================================================================================
 // SimpleSal's suggestion: name EVERY mesa declare/define pair with specific reference to the mesa.
-// Otherwise, the "mesa_*.h" you have may or may not match the mesa you are targeting in the build.
-// The "mesa_min_*.start" pair resides in the SimpleSal directory; copy and rename to your choice.
+// otherwise, the "mesa*.h" you have may or may not match the mesa you are targeting in the build.
 // =================================================================================================
-
-// =================================================================================================
-#define     THIS_BUILDS_BAUD_RATE  (38400)
-
-// =================================================================================================
-// #define MESA_ONEOF_CONTROL_INIT_BUILDTIME
-#define MESA_ONEOF_CONTROL_INIT_RUNTIME
 
 // =================================================================================================
 // -------------------------------------------------------------------------------------------------
-// Because the App defines the substates, and ssUI has menu options to change substates: the menu
-// developer may need to change the ssUI menu software for substates, modified as substates changed.
+// User may leave both of these undefined to remove mesa initialization at build time and run time,
+// but mesa FSMs depend on an InitState: "if runtime and buildtime are not chosen, choose runtime".
+// [.\SimpleSal\ssDocs\ssTEA\ssTEA Initialization Build or Run.note]    select initialization method
+// -------------------------------------------------------------------------------------------------
+#ifndef MESA_ONEOF_CONTROL_INIT_RUNTIME
+#ifndef MESA_ONEOF_CONTROL_INIT_BUILDTIME
+#define MESA_ONEOF_CONTROL_INIT_RUNTIME
+#endif  // not build and not run
+#endif  // not run
+
+// =================================================================================================
+#define RO_IS_ONEOF_LED_ROs(owner,substate) \
+    (((LED_RO == owner)     ||  (LED_RO == RO_owner_Anybody))\
+          && (LED_RO_active & substate))
+
+#define RO_IS_ONEOF_Ascii_ROs(owner,substate) \
+    (((Ascii_ROs == owner)   ||  (Ascii_ROs == RO_owner_Anybody))\
+        && (Ascii_RO_active & substate))
+
+#define RO_IS_ONEOF_Matrix_ROs(owner,substate) \
+    (((LED_Matrix_ROs == owner)  ||  (LED_Matrix_ROs == RO_owner_Anybody))\
+       && (LED_Matrix_RO_active & substate))
+
+// =================================================================================================
+// -------------------------------------------------------------------------------------------------
+// Because only a memory allows us to know the LED state, based on the last ouptut, keep track here.
+// The choice of OFF_STATE as the initial State is based on knowing mesa-specific power-on defaults.
+// -------------------------------------------------------------------------------------------------
+#define OFF_STATE (32)
+#define ON_STATE  (64)
+int mesa_LED_currentState = OFF_STATE;
+
+// =================================================================================================
 // -------------------------------------------------------------------------------------------------
 // The Resource FSM Mesa software should only refer to the states defined by this mesa, right here.
+// Management of resource ownership is inherent in a SimpleSal App co-existing with ssTEA.
 // -------------------------------------------------------------------------------------------------
-#define mesa_RO_substate_delay       ((int) Bit0)    // measure and signal Time: waiting while it occurs
-#define mesa_RO_substate_classic     ((int) Bit1)    // measure and signal Time: counting milliseconds
+// The bit order and grouping is a completely made-up set of ideas and relationships between them.
+// At the highest level, what is app-fsmDemo configured to operate as? Delay video host? ssUI App?
+// -------------------------------------------------------------------------------------------------
+// delay, class, pace and agency are used when creating demonstration videos of the effects of the
+// Arduino Delay function as an idea and in reality.  The delays are in the LED and Ascii accesses
+// within the normal flow of the App and ssUI, to demonstrate the effects of Time being consumed.
+// -------------------------------------------------------------------------------------------------
+#define RO_active_delay         ((int) Bit0)    // measure and signal Time: waiting while it occurs
 
-#define mesa_RO_substate_pace        ((int) Bit2)    // indicate ssTEA's Agency pace period has occured
-#define mesa_RO_substate_agency      ((int) Bit3)    // indicate an Event is being granted agency
-#define mesa_RO_substate_ssTEA       ((int) (Bit2 | Bit3))
+#define RO_active_available1    ((int) Bit1)
+#define RO_active_available2    ((int) Bit2)
+#define RO_active_available3    ((int) Bit3)
 
-#define mesa_RO_substate_group0      ((int) Bit4)    // managed by fsmdemo Apps using Driver to manage
-#define mesa_RO_substate_group1      ((int) Bit5)    // managed by fsmdemo Apps using Driver to manage
-#define mesa_RO_substate_shape0      ((int) Bit6)    // managed by fsmdemo Apps using Driver to manage
-#define mesa_RO_substate_shape1      ((int) Bit7)    // managed by fsmdemo Apps using Driver to manage
-#define mesa_RO_substate_none        ((int) 0)
-#define mesa_RO_substate_all         ((int) (Bit0|Bit1|Bit2|Bit3|Bit4|Bit5|Bit6|Bit7))
+#define RO_active_classic       ((int) Bit4)    // measure and signal Time: counting milliseconds
+#define RO_active_pace          ((int) Bit5)    // classic ssTEA's Agency pace period has occurred
+#define RO_active_agency        ((int) Bit6)    // classic an Event is being granted agency
+#define RO_active_ssTEA         (RO_active_classic | RO_active_pace | RO_active_agency)
+
+#define RO_active_available7    ((int) Bit7)
+
+#define RO_active_group0        ((int) Bit8)
+#define RO_active_group1        ((int) Bit9)
+#define RO_active_shape0        ((int) Bit10)
+#define RO_active_shape1        ((int) Bit11)
+
+#define RO_active_OneOfUIs_ss   ((int) Bit12)   // ssUI expects to field all input and respond
+#define RO_active_OneOfUIs_App  ((int) Bit13)   // App expects to field all input and respond
+#define RO_active_AllOfUIs      (RO_active_OneOfUIs_App | RO_active_OneOfUIs_ss)
+
+#define RO_active_none          ((int) 0)
+#define RO_active_all           ((int) (0xFFF))
 
 #ifdef MESA_ONEOF_CONTROL_INIT_RUNTIME
-RO_state_t      mesa_LED_RO_state;
-RO_substate_t   mesa_LED_RO_substate;
-RO_state_t      mesa_Ascii_RO_state;
-RO_substate_t   mesa_Ascii_RO_substate;
-RO_state_t      mesa_Matrix_RO_state;
-RO_substate_t   mesa_Matrix_RO_substate;
+RO_owner_t          LED_RO;
+RO_substate_t       LED_RO_active;
+RO_owner_t          Ascii_ROs;
+RO_substate_t       Ascii_RO_active;
+RO_owner_t          LED_Matrix_ROs;
+RO_substate_t       LED_Matrix_RO_active;
 #endif  // MESA_ONEOF_CONTROL_INIT_RUNTIME
 
 #ifdef MESA_ONEOF_CONTROL_INIT_BUILDTIME
-RO_state_t      mesa_LED_RO_state       = mesa_RO_state_App;
-RO_substate_t   mesa_LED_RO_substate    = mesa_RO_substate_none;
-RO_state_t      mesa_Ascii_RO_state     = mesa_RO_state_App;
-RO_substate_t   mesa_Ascii_RO_substate  = mesa_RO_substate_none;
-RO_state_t      mesa_Matrix_RO_state    = mesa_RO_state_App;
-RO_substate_t   mesa_Matrix_RO_substate = mesa_RO_substate_none;
+RO_owner_t          LED_RO                  = mesa_ONEOF_Default_LED_RO_owner;
+RO_substate_t       LED_RO_active           = mesa_ONEOF_Default_LED_RO_active;
+RO_owner_t          Ascii_ROs               = mesa_ONEOF_Default_Ascii_RO_owner;
+RO_substate_t       Ascii_RO_active         = mesa_ONEOF_Default_Ascii_RO_active;
+RO_owner_t          LED_Matrix_ROs          = mesa_ONEOF_Default_LED_Matrix_RO_owner;
+RO_substate_t       LED_Matrix_RO_active    = mesa_ONEOF_Default_LED_Matrix_RO_active;
 #endif  // MESA_ONEOF_CONTROL_INIT_BUILDTIME
 
 // =================================================================================================
@@ -65,12 +113,13 @@ RO_substate_t   mesa_Matrix_RO_substate = mesa_RO_substate_none;
 // The ssUI input function uses one of these global variables maintained using classic Timekeeping.
 // These variables satisfy the reference by ssUI until the software to keep Time is needed and added.
 // -------------------------------------------------------------------------------------------------
-TimeUnitsBig_t  mesa_gCtOf_1usThis1ms;      // # of microsecond periods this 1 millisecond period
-TimeUnitsBig_t  mesa_gCtOf_1msThis100ms;    // # of millisecond periods this 100 millisecond period
-TimeUnitsBig_t  mesa_gCtOf_1msThisCycle;    // # of millisecond periods this cycle (on|off|on)
 TimeUnitsBig_t  mesa_gCtOf_1msFreeRunning;  // # of millisecond periods ever, since Time began
 
 // =================================================================================================
+// -------------------------------------------------------------------------------------------------
+// If user did not Opt Out of using the Mesa Minimum Ascii, this software provides what is required.
+// -------------------------------------------------------------------------------------------------
+#ifndef MESA_MIN_OPTOUT_ASCII
 // -------------------------------------------------------------------------------------------------
 // Every byte sent to the user over the Serial Port is an Ascii value sent by this function.
 // -------------------------------------------------------------------------------------------------
@@ -79,24 +128,38 @@ void  mesa_uiOp_emit_1 (Bits8_t thisByte)
     Serial.write (thisByte);
 }   // mesa_uiOp_emit_1
 // -------------------------------------------------------------------------------------------------
+// The declaration for this function is in ssTEA declarations, but mesa must define it here.
+// "Ascii Init Not Complete" must be hidden by whatever resolves to a boolean true or false.
+// -------------------------------------------------------------------------------------------------
 boolean mesa_uiOp_deviceInitialize (void)
 {
     int try_ct = 0;
 
-    mesa_Ascii_Init (THIS_BUILDS_BAUD_RATE);
+    mesa_Ascii_InitState (THIS_BUILDS_BAUD_RATE);
 
     // ssTEA portability per Ascii depends on the mesa providing True/False solution to this macro
     while (mesa_Ascii_Init_NotComplete)
     {
-        delay (100);
+        delay (100);        // Ascii Device Initialize takes some Time
         if (++try_ct > 10)
         {
             return (false);
         }
+        mesa_uiOp_emit_1 ('?');
     }   // while
 
     return (true);
 }   // mesa_uiOp_deviceInitialize
+// -------------------------------------------------------------------------------------------------
+// This is a signal carrier between a memory location and a device that will emit an Ascii value.
+// The definition by the emitting device is so complex and mesa-specific that SimpleSal ignores it.
+// Because this is a signal carrier, the values given to the device are leaving the building now.
+// -------------------------------------------------------------------------------------------------
+// The complex data type, just like the simple data types int or char, has operands and operations:
+//  a) pAsciiA points to a contiguous array in any memory of values the emitting device accepts,
+//  b) each location has a value that may be interpreted as an Ascii data or control value,
+//  c) any location with the value of 0 (Ascii NUL) indicates that the end of data has been reached,
+//  d) any pointer expression with a value of 0 (zero) indicates there is no array to reference.
 // -------------------------------------------------------------------------------------------------
 void mesa_uiOp_emit_pAsciiA (pAsciiA_t pAsciiA)
 {
@@ -109,7 +172,9 @@ void mesa_uiOp_emit_pAsciiA (pAsciiA_t pAsciiA)
         }   // while non-nul characters
     }   // if pointer
 }   // mesa_uiOp_emit_pAsciiA
+#endif  //  not MESA_MIN_OPTOUT_ASCII       // use mesas_min_*.h content
 // =================================================================================================
+#ifndef MESA_MIN_OPTOUT_LED
 // -------------------------------------------------------------------------------------------------
 // The LED here is the Arduino LED_BUILTIN, which may be a standard device across all Arduino Mesas.
 // -------------------------------------------------------------------------------------------------
@@ -124,6 +189,7 @@ void mesa_uiOp_LEDoff (void)
 {
     digitalWrite (LED_BUILTIN, mesaPin_VALUE_LOW);
 }   // mesa_uiOp_LEDoff
+#endif  //  not MESA_MIN_OPTOUT_LED         // use mesa_min_*.h content
 // =================================================================================================
 // ------------------------------------------------------------------------------------------------
 // SimpleSal uses psuedo-random numbers for simple purposes; the implementation is based on arrays.
@@ -134,7 +200,9 @@ void mesa_uiOp_LEDoff (void)
 // One method for creating repeatable sequences of random numbers is creating local data.  One good
 // reason to have a repeatable sequence is when a sequence of random numbers is crashing your code.
 // ------------------------------------------------------------------------------------------------
-#ifdef MESA_OPTIN_RANDOM_NUMBERS
+#ifndef MESA_MIN_OPTOUT_RANDOM_NUMBERS
+// -------------------------------------------------------------------------------------------------
+// "I opt out of using the Random Minimum software within ssTEA". Each implementation has its secret.
 // -------------------------------------------------------------------------------------------------
 // The tables both have 100 numbers in them.  One algorithm might go through the table containing
 // numbers from 0-99 (using "for (i=0;i<99;++)"), using each entry in the table as a random number;
@@ -142,6 +210,8 @@ void mesa_uiOp_LEDoff (void)
 // Another algorithm might use the value from the 0-99 table as an index into the table of numbers
 // from 0-999: "random = from_1000[from_100[i]]";.  Two examples of generating deterministic random
 // number sequences; deterministic meaning the algorithm will produce the same sequence each time.
+// -------------------------------------------------------------------------------------------------
+// SimpleSal knows that randomly picking from random numbers does not make the answer more random.
 // -------------------------------------------------------------------------------------------------
 #define RANDOM_100_TABLE_CT     (100)
 #define RANDOM_100_TABLE_MAX_I  (RANDOM_100_TABLE_CT-1)
@@ -218,14 +288,24 @@ mesa_Random_t   mesa_Random_From256_Seq (void)
                   (mesa_Random_From100_Seq () << 4);        // upper nibble
     return (BuildResult & 0xFF);                            // necessary?
 }   // mesa_Random_From256_Seq
-/* -----------------------------------------------------------------------------
-   ----------------------------------------------------------------------------- */
-void    mesa_Random_Init (void)
+/* ------------------------------------------------------------------------------------------------
+   In development and test, many scenarios make use of a random number sequence.
+   What creates a sequence of numbers, truly random in relation to each other? Can we depend on it?
+   When we depend on it to expose bugs, and a sequence exposes a bug, can that sequence be repeated?
+   Ironically, the only way to repeat the sequence is to completely control the creation process.
+
+   If you can make something happen once, then you can repeat it; faster path to solving it.
+
+   this is specific to each implementation, only when MESA_OPTIN_RANDOM_NUMBERS is defined
+   ------------------------------------------------------------------------------------------------
+   The "engine" that creates the numbers typically has an InitState to make the engine start over.
+   ------------------------------------------------------------------------------------------------ */
+void    mesa_Random_InitState (void)
 {
     gNextRandom_100_i = 0;
     gNextRandom_1000_i = 0;
-}   // mesa_Random_Init
-#endif  // MESA_OPTIN_RANDOM_NUMBERS
+}   // mesa_Random_InitState
+#endif  // MESA_MIN_OPTOUT_RANDOM_NUMBERS
 // =================================================================================================
 // -------------------------------------------------------------------------------------------------
 // The "serial port" communications medium supports text-based exchanges of data with humans (TTY?),
@@ -439,4 +519,4 @@ Bits8_t Bits8Op_RotateRight (Bits8_t TheseBits)
     return (NewBits8);
 }   // Bits8Op_RotateRight
 
-#endif  // __MESA_MIN_DEF_H
+#endif  // __MESAS_MIN_DEF_H

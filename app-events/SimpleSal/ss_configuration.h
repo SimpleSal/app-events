@@ -1,50 +1,47 @@
-/* -- SimpleSal: ssTEA, ssUI, and ssIO | Copyright (C) 2025, 2026 TruSoft Computing LLC |  All rights reserved. --
+/* -- SimpleSal: ssTEA, ssUI, and ssIO | Copyright (C) 2025, 2026 TruSoft Computing LLC |   All rights reserved. --
    This software is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
    This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-   ---------------------------------------------------------------------------------------------------
  *
- * ss_configuration.start   ssTEA and SimpleSal build choices and allocation choices are possible.
- *                          This SimpleSal file becomes "ss_configuration.h" in a new App project.
- *                          The App project file's revision over Time is under control of the App.
+ * ss_configuration.start   Fundamental build and allocation choices are defined in source files.
+ *
+ * The App version of this file, "ss_configuration.h", may change over Time under control of the App.
+ * SimpleSal suggests the App version exist outside the SimpleSal repo managed object (.\SimpleSal\).
+ * The contents of this file can of course be edited into any App file, the ownership is the App's.
  *
  **************************************************************************************************/
 #ifndef __SS_CONFIGURATION_H
 #define __SS_CONFIGURATION_H
 
 // =================================================================================================
-// Start multiple-mesa portability considerations (where "mesa" is what SimpleSal calls a computer).
+// Start of multiple-mesa portability considerations
 // =================================================================================================
-// These are issues relating to portability across mesas: the way the software is able to express
-// and perceive Truth, and perceive the passage of Time, has to be abstracted to allow variation.
-// The portability requirement is a result of SimpleSal's desire to support Apps in a variety of
-// development environments and mesas.  The App's portability is independent from SimpleSal's.
-// These solutions to the issues are the full extent of attention needed to use SimpleSal on a mesa.
+// [.\SimpleSal\ssDocs\Mesa\Portability Considerations.note]
 // =================================================================================================
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // define SST_OPTIN_READ_MS_FROM_CHIP to force a mesa chip register read, otherwise, derive from us.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // #define SST_OPTIN_READ_MS_FROM_CHIP
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // Everybody agrees at this point, without the benefit of ssTEA definitions, that each chunk of 1000
 // equal chunks, chunks that taken together add up to a 1 millisecond chunk, is 1 microsecond long.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 #define REALITY_USECS_PER_MSEC  (1000)
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // ssTEA's notion of Time is based on these functions.  Their internal workings are specific to the
 // the Host OS, as well as to the Mesa ssTEA is "executing on".  Isolation establishes portability.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 unsigned long int ssT_rawCt_usNow (void)
 {
     return ((unsigned long int) micros ());     // a function specific to the Arduino ecosystem
 }   // ssT_rawCt_usNow
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 unsigned long int ssT_rawCt_msNow (unsigned long int usCt)
 {
 #ifdef SST_OPTIN_READ_MS_FROM_CHIP
     return ((unsigned long int) millis ());     // a function specific to the Arduino ecosystem
-// -- trusted
+// - trusted
 #else   // not SST_OPTIN_READ_MS_FROM_CHIP, not using chip register for millis
-// -- not defined
+// - not defined
     if (usCt == 0)
     {
         return ((unsigned long int) millis ()); // a function specific to the Arduino ecosystem
@@ -55,15 +52,15 @@ unsigned long int ssT_rawCt_msNow (unsigned long int usCt)
     }
 #endif  // SST_OPTIN_READ_MS_FROM_CHIP
 }   // ssT_rawCt_msNow
-// ------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------
 // Anything displayed by ssUI (including by ssTEA for ssUI) is emitted using these defined names.
 // References may be hidden by fancy defines that ease the burden, but every call resolves to this.
 // Example: A mesa must provide, named here "mesa_uiOp_emit_1", that APPEARS to send 8-bit Ascii.
 // First layer maps what the mesa (hardware) provides for services that mesa_Ascii makes use of.
 // This layer maps the mesa_Ascii services into ssUI and ssTEA usages of basic mesa software.
-// ------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------
 // [.\SimpleSal\ssDocs\mesa\Mesa Configuration Basics.note]      describes the Ascii device on mesa
-// ------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------
 #define     ss_uiOp_recv_avail_ct        mesa_uiOp_recv_avail_ct
 #define     ss_uiOp_recv_1               mesa_uiOp_recv_1
 
@@ -80,46 +77,46 @@ unsigned long int ssT_rawCt_msNow (unsigned long int usCt)
 // =================================================================================================
 
 // =================================================================================================
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // [.\SimpleSal\ssDocs\ssTEA\ssTEA Configuration Basics.note]  descriptions of configuration choices
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // The configuration basics note describes how the configuration process works through this file.
 // The note explains how to incorporate this file into the App project as "ss_configuration.h".
 // Unless simplest is accepted, all of the options (optional and required) do not establish a value.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // =================================================================================================
 #ifdef SS_OPTIN_INCLUDE_SSTEA
 
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // Whether or not the Host OS has cool memory allocation tools; data allocations occur at build time
 // in the sense that decisions are made about placing every object of code and data in memory.  All
 // allocation by ssTEA/ssUI, along with the App's, refer to this root definition of Event resources.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 #ifndef SSE_ACTIVE_EVENTS_CT_REQUESTED
 /* default */ #define     SSE_ACTIVE_EVENTS_CT_REQUESTED       (2)
 #endif  // SSE_ACTIVE_EVENTS_CT_REQUESTED
 
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // SS_ACCEPT_SIMPLEST_CONFIG
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // The values #defined here are basic but sufficient to configure SimpleSal build content; without
 // ACCEPT defined, the user must define the full, complex, sophisticated content control options.
 // The true description of options may be found in the NOT SIMPLEST section below; these summarize.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 #ifdef SS_ACCEPT_SIMPLEST_CONFIG
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // A SimpleSal App has chosen to co-exist with ssTEA; maybe also making use of ssUI and/or ssIO.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // True SimpleSalness occurs through understanding that Time is a value modified by an FSM;
 // on the path to True SimpleSalness, the Arrow of Time is the way humans understand Time.
 // Plancks are not perceivable so the plancks field in a Time value is used for other purposes.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // ABOUTEVDB gives responsibility for allocation to ssE's DB functions, while trusting the App.
 // A Trusted App has direct access to the information ssTEA uses to manage Events at run-time.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // The choice of initialization timing (build or run time) may be limited by the development
 // and/or execution environments of the actual App running on the Mesa.  Or maybe not limited.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 /* simplest */ #define      SS_OPTIN_INCLUDE_SSUI
 
 /* simplest */ #define      SST_ONEOF_TIME_IS_AN_ARROW
@@ -134,19 +131,19 @@ unsigned long int ssT_rawCt_msNow (unsigned long int usCt)
 /* simplest */ #define      SSTEA_ONEOF_CONTROL_INIT_RUNTIME
 /* simplest */ #define      SSUI_ONEOF_CONTROL_INIT_RUNTIME
 
-// -------------------------------------------------------------------------------------------------
-//      ssTEA statistics count Api FSM transitions, App Run FSM and EvEx Run FSM transitions.
-//      Statistics about FSM transitions in real Time become handy when Time is in milliseconds.
-// -------------------------------------------------------------------------------------------------
-//      ssTEA and ssUI have a two-layer information subsystem: if #defined to exist (layer 1), the
-//      software will make announcements as it operates.  Layer 2 consists of run-time boolean FSMs
-//      controlling whether groups of layer 1 messages ANNOUNCED actually SHOW on the output device.
-// -------------------------------------------------------------------------------------------------
-//      ssUI has the ability to "execute" collections of "commands" as user input in real time.
-//      Arrays of commands may be added/modified in ssUI (local copy in SimpleSal) or in the App.
-// -------------------------------------------------------------------------------------------------
-//      The Build options in effect (having been #defined) are displayed to the user by a function.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
+// ssTEA statistics count Api FSM transitions, App Run FSM and EvEx Run FSM transitions.
+// Statistics about FSM transitions in real Time become handy when Time is in milliseconds.
+// ------------------------------------------------------------------------------------------------
+// ssTEA and ssUI have a two-layer information subsystem: if #defined to exist (layer 1), the
+// software will make announcements as it operates.  Layer 2 consists of run-time boolean FSMs
+// controlling whether groups of layer 1 messages ANNOUNCED actually ARE SENT to the output device.
+// ------------------------------------------------------------------------------------------------
+// ssUI has the ability to "execute" collections of "commands" as user input in real time.
+// Arrays of commands may be added/modified in ssUI (local copy in SimpleSal) or in the App.
+// ------------------------------------------------------------------------------------------------
+// The Build options in effect (having been #defined) may be displayed to the user by a function.
+// ------------------------------------------------------------------------------------------------
 /* simplest */ #define      SSA_OPTIN_STATS_FSM
 /* simplest */ #define      SSA_OPTIN_STATS_RUNFSM
 /* simplest */ #define      SSA_OPTIN_STATS_APIFSM
@@ -157,6 +154,8 @@ unsigned long int ssT_rawCt_msNow (unsigned long int usCt)
 /* simplest */ #define      SSTEA_OPTIN_SHOW_SIGNALS
 
 /* simplest */ #define      SSUI_OPTIN_INCLUDE_CMDS_IN_SSUI_SSUI
+/* simplest */ #define      SSUI_UIBUFFER_ALLOC   (60+2+1)
+/* simplest */ #define      SSUI_ONEOF_SERIAL_RECEIVES_LINES
 
 /* simplest */ #define      SS_OPTIN_SHOW_BUILD_OPTIONS
 
@@ -168,12 +167,12 @@ unsigned long int ssT_rawCt_msNow (unsigned long int usCt)
 // =================================================================================================
 #ifndef SS_ACCEPT_SIMPLEST_CONFIG
 
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // The SSE ability to manage some number of events, "some" is CT_REQUESTED.  The "trusted" category
 // allocates one shared copy of Event data space; "not trusted" causes allocations for ssE and App.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // [.\SimpleSal\ssDocs\ssTEA\Event Databases.note]   ssE or the App instantiates, App trusted or not
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // #define      SSE_ONEOF_ABOUTEVDB_ALLOC_BY_SSE
 // #define      SSE_ONEOF_ABOUTEVDB_ALLOC_BY_APP
 
@@ -185,32 +184,35 @@ unsigned long int ssT_rawCt_msNow (unsigned long int usCt)
 #endif  // SSE_OPTIN_ABOUTEVDB_TRUSTED_APP
 
 
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // A laboratory environment, a complex configuration defaults to quiet until it is forced to bark.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // #define      SS_OPTIN_SHOW_BUILD_OPTIONS
 
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // The start point for a complex configuration: every OPTIN in ssTEA is disabled, good ONEOFs chosen.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // #define      SST_ONEOF_TIME_IS_AN_ARROW
 // #define      SST_ONEOF_TIME_IS_AN_FSM
 
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // This Opt-In build choice will cause the allocation and reference of Event data to be reported.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // #define      SSE_OPTIN_ABOUTEVDB_DEBUG
 
-// -------------------------------------------------------------------------------------------------
-// [.\SimpleSal\ssDocs\ssTEA\bugbugbug.note]     select the method of initialization
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
+// [.\SimpleSal\ssDocs\swDev\FSMs- Init FSM Memory States.note]        select initialization method
+// [.\SimpleSal\ssDocs\ssTEA\ssTEA Initialization Build or Run.note]   select initialization method
+// ------------------------------------------------------------------------------------------------
 // #define      SSTEA_ONEOF_CONTROL_INIT_RUNTIME
 // #define      SSTEA_ONEOF_CONTROL_INIT_BUILDTIME
 
-// -------------------------------------------------------------------------------------------------
-// A compressed Time value will shortern the comparison of two Times, but requires bit manipulation.
-// -------------------------------------------------------------------------------------------------
-// #define     SST_OPTIN_TIME_COMPRESSED_TUS    // Agency uses generated compressed values
+// ------------------------------------------------------------------------------------------------
+// Futures: the structure-fields of a Time variable may be compressed into a single 32-bit value.
+// Keeping the TU order, a bit value of <dayN><hrB><minA> can be compared to <dayN+1><hrY><minX>
+// A compressed Time value will shorten the comparison of two Times, but requires bit manipulation.
+// ------------------------------------------------------------------------------------------------
+//  Future:  // #define     SST_OPTIN_TIME_COMPRESSED_TUS    // Agency uses generated compressed values
 
 // #define      SST_OPTIN_TIME_NSECS_TU        // creates a field, value defined by one algorithm
 #ifdef SST_OPTIN_TIME_NSECS_TU
@@ -220,50 +222,49 @@ unsigned long int ssT_rawCt_msNow (unsigned long int usCt)
 // #define     SST_ONEOF_TIME_NSECS_INCR       // "next ns value" returns an incrementing value
 #endif  // SST_OPTIN_TIME_NSECS_TU
 
+// #define     MESA_OPTIN_RANDOM_NUMBERS
+
 // #define     SST_ONEOF_TIME_PLANCKS_RANDOM
 // #define     SST_ONEOF_TIME_PLANCKS_ZERO
 // #define     SST_ONEOF_TIME_PLANCKS_INCR
 
-#ifdef      SST_ONEOF_TIME_PLANCKS_RANDOM
-#define     MESA_OPTIN_RANDOM_NUMBERS
-#endif  // SST_ONEOF_TIME_PLANCKS_RANDOM
 
-// -------------------------------------------------------------------------------------------------
-// SST's debug configuration choices affect SST's build configuration and so are defaulted to off.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
+// ssT's debug configuration choices affect ssT's build configuration and so are defaulted to off.
+// ------------------------------------------------------------------------------------------------
 // #define     SST_OPTIN_TIMEMATH_FAIL_ANNOUNCE
 // #define     SST_OPTIN_TIMEMATH_OKAY_ANNOUNCE
 
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // Time debug is about the variables/code at the Time variable level; Time Math debug is about the
 // variables/code while the FSM-based Time Math algorithms execute during math operations.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // #define     SST_OPTIN_TIME_DEBUG
 #ifdef SST_OPTIN_TIME_DEBUG
-// #define     SST_OPTIN_TIME_DEBUG_ADDRESS
-// #define     SST_OPTIN_TIME_DEBUG_RAWDATA
-// #define     SST_OPTIN_TIME_DEBUG_IFS
-// #define     SST_OPTIN_TIME_DEBUG_SST_SUM
+// #define     SST_OPTIN_DEBUG_TIME_ADDRESS
+// #define     SST_OPTIN_DEBUG_TIME_RAWDATA
+// #define     SST_OPTIN_DEBUG_TIME_IFS
+// #define     SST_OPTIN_DEBUG_TIME_SST_SUM
 #endif  // SST_OPTIN_TIME_DEBUG
 
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // the display of a positive or negative Time Variable value consists of Time Unit fields which
 // describe that Time, and so each Time Unit value is the same sign as the Time Variable it is in.
 // This usually is not important, as the Time Variable display shows everything that would be shown
 // by also showing the sign of each Time Unit.  While doing Time Math, the Time Variable value as
 // a collection of Time Units becomes "incoherent" until all the borrows and carries have an effect.
 // This becomes useful when exploring deep into the Time Math FSM and Time Unit Math FSM operations.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // #define     SST_OPTIN_TIME_SHOW_TU_SIGN
 
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // The choice of the value in a plancks field Time variable is distinct from how much the user sees.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // #define     SST_OPTIN_TIME_SHOW_32BIT_PLANCKS
 
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // This Opt-In build choice will cause the AgencyRoot/Next core ssTEA functions to report actions.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // #define     SSA_OPTIN_AGENCY_DEBUG
 #ifdef SSA_OPTIN_AGENCY_DEBUG
 // #define      SSA_OPTIN_AGENCY_DEBUG_SEQUENCE
@@ -274,12 +275,12 @@ unsigned long int ssT_rawCt_msNow (unsigned long int usCt)
 
 #endif  // did not accept SS_ACCEPT_SIMPLEST_CONFIG
 
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // The Agency Api FSM states [on | reset] envelope the Agency Run FSM [agencying | paused | stopped]
 // states; all of the transitions of the User's FSM are tracked by counters for the User to use.
 // This Opt-In build choice controls the use of statistics: allocation, computation and reporting.
 // The data allocation and computation depends on ssTEA; reporting depends upon User using ssTEA.
-// ------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------
 // #define     SSA_OPTIN_STATS_FSM
 #ifdef SSA_OPTIN_STATS_FSM
 // #define     SSA_OPTIN_STATS_APIFSM
@@ -289,69 +290,82 @@ unsigned long int ssT_rawCt_msNow (unsigned long int usCt)
 #endif  // SS_OPTIN_INCLUDE_SSTEA
 
 // =================================================================================================
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // These configuration options control the appearance or functionality of ssUI as a User Interface.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // When ssTEA does have a UI, it emits information in the form "field <value>" followed by space(s).
 // Most information displayed by ssUI is in the same format.  The gap is added assuming more follows.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 #define ssTEA_standard_fieldgap (2)
 #define ssUI_standard_fieldgap  (2)
 
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // this specific definition limits the exact characters that ssUI will consider a "math symbol".
 // This is the type of definition that has to be owned by someone and defined somewhere. But, where?
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 #define ssUI_Ascii_isMathSymbol(c)   \
                 ((c==Ascii_LT)||(c==Ascii_GT)||(c==Ascii_EQ)||(c==Ascii_Plus)||(c==Ascii_Minus))
 
 // =================================================================================================
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // ssTEA has a very basic UI that emits some information about a specific event or situation;
 // ssUI is knowledgeable about ssTEA data, as an option, improving the debug information available.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 #ifdef SS_OPTIN_INCLUDE_SSUI
 
 #ifdef SS_ACCEPT_SIMPLEST_CONFIG
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // [.\SimpleSal\ssDocs\ssUI\UI Considerations for ssUI.note]   ssUI input buffer size considerations
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 #define  SSUI_UIBUFFER_ALLOC  (60+2+1) // <0-60 Ascii values><0-2 Ascii input terminators><1 nul>
 
+// ------------------------------------------------------------------------------------------------
+// Initialization at run time is more straightforward than using build tricks to initialize memory.
+// ------------------------------------------------------------------------------------------------
 #define  SSUI_ONEOF_CONTROL_INIT_RUNTIME
 
-#define  ssUI_Default_Verbosity     false
+// ------------------------------------------------------------------------------------------------
+// The Serial Monitor (serial terminal program) in the Arduino IDE only sends chars when CR entered.
+// The TeraTerm serial terminal program (as an example) sends each character as the user types it.
+// An FSM collecting lines of input from the user, or from a "commands" array, acts differently.
+// ------------------------------------------------------------------------------------------------
+// #define      SSUI_ONEOF_SERIAL_RECEIVES_LINES
+// #define      SSUI_ONEOF_SERIAL_RECEIVES_CHARS
 
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // ssUI uses a command FSM to execute arrays of commands; this control includes ssUI's arrays.
-// There is a similar control for arrays of commands by the user: "OPTIN_INCLUDE_CMDS_IN_SSUI_".
-// -------------------------------------------------------------------------------------------------
+// There is a similar control for arrays of commands by the user: "OPTIN_INCLUDE_CMDS_IN_SSUI_APP".
+// ------------------------------------------------------------------------------------------------
 #define  SSUI_OPTIN_INCLUDE_CMDS_IN_SSUI_SSUI
 
 #else   // did not accept SS_ACCEPT_SIMPLEST_CONFIG
 
 // #define      SSUI_UIBUFFER_ALLOC  x          // uncomment and put a number in for the 'x'
-
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // [.\SimpleSal\ssDocs\ssUI\UI Considerations for ssUI.note]     select the method of initialization
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // #define      SSUI_ONEOF_CONTROL_INIT_RUNTIME
 // #define      SSUI_ONEOF_CONTROL_INIT_BUILDTIME
 
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // [.\SimpleSal\ssDocs\ssUI\UI Considerations for ssUI.note]      stored input sequences: CMD arrays
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // allow a developer/user of ssUI to define a collection of useful commands to refer to and execute.
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // #define  SSUI_OPTIN_INCLUDE_CMDS_IN_SSUI_APP
 // #define  SSUI_OPTIN_INCLUDE_CMDS_IN_SSUI_SSUI
 
 #endif  // did not accept SS_ACCEPT_SIMPLEST_CONFIG
 
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
+// SSUI_BUFFER_ALLOC must be defined before get here, if only because loop limiters depend on it.
+// ------------------------------------------------------------------------------------------------
+#define      SSUI_UIBUFFER_MAX_I    (SSUI_UIBUFFER_ALLOC-1)
+
+// ------------------------------------------------------------------------------------------------
 // enabling this definition enables a mess of debug facilities that may be enabled/disabled.
 // The phrase "mess of" means "a loose collection of" and "bunch of stuff needing to be cleaned up".
-// -------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 // #define SSUI_OPTIN_DEBUG
 #ifdef SSUI_OPTIN_DEBUG
 // #define      SSUI_OPTIN_DEBUG_VARNAMES

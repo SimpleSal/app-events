@@ -52,8 +52,8 @@ ssE_EvResult_t App_Launch_in_ssTEA (ssUI_db_pEvApi_t pEvApi)
     }   // Validate failed
 
 #ifdef APP_OPTIN_ANNOUNCE_APP
-    ss_uiOp_Show_Apifsm_state (pEvApi->pssTEA_ApiSig, pApiSigName (pEvApi));
-    ss_uiOp_Show_Runfsm_state (pEvApi->pssTEA_ApiSig, pApiSigName (pEvApi));
+    ss_uiOp_Show_Apifsm_state (pEvApi->ssTEA_pApiSig, pApiSigName (pEvApi));
+    ss_uiOp_Show_Runfsm_state (pEvApi->ssTEA_pApiSig, pApiSigName (pEvApi));
 #endif // APP_OPTIN_ANNOUNCE_APP
 
     return (Launch_Result);
@@ -62,14 +62,15 @@ ssE_EvResult_t App_Launch_in_ssTEA (ssUI_db_pEvApi_t pEvApi)
 // =================================================================================================
 // -------------------------------------------------------------------------------------------------
 // The allocation of memory for event management data may be handled by ssTEA or by the App.
-// At the end of this file is ssTEA's implementation. Selected as manager? Data exists and is used.
+// -------------------------------------------------------------------------------------------------
 // [.\SimpleSal\ssDocs\ssTEA\Event Declarations.note]       ssE declares what the interface will be
 // [.\SimpleSal\ssDocs\ssTEA\Event Databases.note]          ssE or the App instantiates the database
 // -------------------------------------------------------------------------------------------------
-// App note: the allocation is optional UNLESS the configuration says the App will allocate data.
+// App note: this software is optional UNLESS the configuration says the App will allocate data.
 // App note: the method is arbitrarily different from the ssE implementation just to show it can be.
 // -------------------------------------------------------------------------------------------------
 #ifdef SSE_ONEOF_ABOUTEVDB_ALLOC_BY_APP
+
 ssE_AboutEv_t   AboutEvDB_allocSpace[SSE_ONEOF_ABOUTEVDB_ALLOC_CT];
 boolean         AboutEvDB_allocTrack[SSE_ONEOF_ABOUTEVDB_ALLOC_CT];
 
